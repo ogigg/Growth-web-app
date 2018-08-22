@@ -1,8 +1,11 @@
+using Growth.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +23,7 @@ namespace Growth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<GrowthDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -35,6 +39,9 @@ namespace Growth
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                var options = new WebpackDevMiddlewareOptions();
+                options.HotModuleReplacement = true;
+                //app.UseWebpackDevMiddleware(options);
             }
             else
             {
@@ -63,6 +70,7 @@ namespace Growth
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+
                 }
             });
         }

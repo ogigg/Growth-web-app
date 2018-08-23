@@ -18,7 +18,9 @@ namespace Growth.Models
         [StringLength(255)]
         public string Name { get; set; }
 
-        public Order Order { get; set; }
+        //public Order Order { get; set; }
+
+        public int OrderId { get; set; }
 
     }
 }

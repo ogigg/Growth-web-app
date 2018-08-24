@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Growth.Migrations
 {
     [DbContext(typeof(GrowthDbContext))]
-    [Migration("20180822200212_ApplyConstrains")]
-    partial class ApplyConstrains
+    [Migration("20180824204756_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,25 @@ namespace Growth.Migrations
                 .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Growth.Models.Feature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PlantId");
+
+                    b.Property<int?>("SpeciesId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpeciesId");
+
+                    b.ToTable("Features");
+                });
 
             modelBuilder.Entity("Growth.Models.Order", b =>
                 {
@@ -36,32 +55,38 @@ namespace Growth.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Growth.Models.Plant", b =>
+            modelBuilder.Entity("Growth.Models.Species", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("MakeId");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int?>("OrderId");
+                    b.Property<int>("OrderId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Plants");
+                    b.ToTable("Species");
                 });
 
-            modelBuilder.Entity("Growth.Models.Plant", b =>
+            modelBuilder.Entity("Growth.Models.Feature", b =>
                 {
-                    b.HasOne("Growth.Models.Order", "Order")
-                        .WithMany("Plants")
-                        .HasForeignKey("OrderId");
+                    b.HasOne("Growth.Models.Species")
+                        .WithMany("Features")
+                        .HasForeignKey("SpeciesId");
+                });
+
+            modelBuilder.Entity("Growth.Models.Species", b =>
+                {
+                    b.HasOne("Growth.Models.Order")
+                        .WithMany("Species")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

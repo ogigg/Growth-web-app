@@ -27,11 +27,13 @@ namespace Growth.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("PlantId");
+                    b.Property<int>("PlantId");
+
+                    b.Property<int?>("SpeciesId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlantId");
+                    b.HasIndex("SpeciesId");
 
                     b.ToTable("Features");
                 });
@@ -51,7 +53,7 @@ namespace Growth.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Growth.Models.Plant", b =>
+            modelBuilder.Entity("Growth.Models.Species", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,20 +69,20 @@ namespace Growth.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Plants");
+                    b.ToTable("Species");
                 });
 
             modelBuilder.Entity("Growth.Models.Feature", b =>
                 {
-                    b.HasOne("Growth.Models.Plant")
+                    b.HasOne("Growth.Models.Species")
                         .WithMany("Features")
-                        .HasForeignKey("PlantId");
+                        .HasForeignKey("SpeciesId");
                 });
 
-            modelBuilder.Entity("Growth.Models.Plant", b =>
+            modelBuilder.Entity("Growth.Models.Species", b =>
                 {
                     b.HasOne("Growth.Models.Order")
-                        .WithMany("Plants")
+                        .WithMany("Species")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

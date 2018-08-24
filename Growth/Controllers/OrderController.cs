@@ -30,7 +30,7 @@ namespace Growth.Controllers
         [HttpGet("/api/orders")]
         public async Task<ICollection<OrderResource>> GetOrders()
         {
-            var orders = await _context.Orders.Include(o=>o.Plants).ToListAsync();
+            var orders = await _context.Orders.Include(o=>o.Species).ToListAsync();
             return _mapper.Map<List<Order>, List<OrderResource>>(orders);
         }
         

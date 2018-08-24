@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Growth.Models
 {
-    [Table("Plants")]
-    public class Plant
+    [Table("Species")]
+    public class Species
     {
 
         public int Id { get; set; }
@@ -24,7 +24,7 @@ namespace Growth.Models
 
         public ICollection<Feature> Features { get; set; }
 
-        public Plant()
+        public Species()
         {
             Features = new Collection<Feature>();
         }

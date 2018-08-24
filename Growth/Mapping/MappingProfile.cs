@@ -13,7 +13,7 @@ namespace Growth.Mapping
         public MappingProfile()
         {
             CreateMap<Order, OrderResource>();
-            CreateMap<Plant, PlantResource>();
+            CreateMap<Species, SpeciesResource>();
         }
     }
 }

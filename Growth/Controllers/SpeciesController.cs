@@ -14,13 +14,13 @@ namespace Growth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlantsController : ControllerBase
+    public class SpeciesController : ControllerBase
     {
         private GrowthDbContext _context { get; }
         private IMapper _mapper { get; }
 
 
-        public PlantsController(GrowthDbContext context, IMapper mapper)
+        public SpeciesController(GrowthDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -28,11 +28,11 @@ namespace Growth.Controllers
 
 
 
-        [HttpGet("/api/plants")]
-        public async Task<ICollection<PlantResource>> GetPlants()
+        [HttpGet("/api/species")]
+        public async Task<ICollection<SpeciesResource>> GetSpecies()
         {
-            var plants = await _context.Plants.Include(p=>p.Features).ToListAsync();
-            return _mapper.Map<List<Plant>, List<PlantResource>>(plants);
+            var species = await _context.Species.Include(s=>s.Features).ToListAsync();
+            return _mapper.Map<List<Species>, List<SpeciesResource>>(species);
         }
     }
 }

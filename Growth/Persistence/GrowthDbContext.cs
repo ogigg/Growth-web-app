@@ -17,11 +17,9 @@ namespace Growth.Persistence
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Plant> Plants { get; set; }
+        public DbSet<Species> Species { get; set; }
 
         public DbSet<Feature> Features { get; set; }
-
-
 
     }
 }

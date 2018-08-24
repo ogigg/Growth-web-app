@@ -15,11 +15,11 @@ namespace Growth.Models
         [StringLength(255)]
         public string Name { get; set; }
 
-        public ICollection<Plant> Plants { get; set; }
+        public ICollection<Species> Species { get; set; }
 
         public Order()
         {
-            Plants = new Collection<Plant>();
+            Species = new Collection<Species>();
         }
     }
 }

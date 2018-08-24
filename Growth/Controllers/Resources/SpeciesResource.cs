@@ -7,7 +7,7 @@ using Growth.Models;
 
 namespace Growth.Controllers.Resources
 {
-    public class PlantResource
+    public class SpeciesResource
     {
         public int Id { get; set; }
 

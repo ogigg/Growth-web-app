@@ -9,7 +9,10 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { PlantFormComponent } from './plant-form/plant-form.component';
+import { PlantFormComponent } from './components/plant-form/plant-form.component';
+import { OrderService } from './services/order.service';
+
+
 
 @NgModule({
   declarations: [
@@ -31,7 +34,7 @@ import { PlantFormComponent } from './plant-form/plant-form.component';
       { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
-  providers: [],
+  providers: [OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

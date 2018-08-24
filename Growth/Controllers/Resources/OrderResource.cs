@@ -18,11 +18,11 @@ namespace Growth.Controllers.Resources
 
         public string Name { get; set; }
 
-        public ICollection<PlantResource> Plants { get; set; }
+        public ICollection<SpeciesResource> Species { get; set; }
 
         public OrderResource()
         {
-            Plants = new Collection<PlantResource>();
+            Species = new Collection<SpeciesResource>();
         }
     }
 }

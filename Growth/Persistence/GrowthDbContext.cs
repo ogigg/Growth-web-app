@@ -19,6 +19,10 @@ namespace Growth.Persistence
 
         public DbSet<Plant> Plants { get; set; }
 
+        public DbSet<Feature> Features { get; set; }
+
+
+
     }
 }
 

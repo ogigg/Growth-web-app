@@ -22,5 +22,11 @@ namespace Growth.Models
 
         public int OrderId { get; set; }
 
+        public ICollection<Feature> Features { get; set; }
+
+        public Plant()
+        {
+            Features = new Collection<Feature>();
+        }
     }
 }

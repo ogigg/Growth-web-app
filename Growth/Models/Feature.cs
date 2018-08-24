@@ -11,5 +11,6 @@ namespace Growth.Models
 
         public string Name { get; set; }
 
+        public int PlantId { get; set; }
     }
 }

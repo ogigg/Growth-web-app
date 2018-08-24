@@ -27,6 +27,7 @@ import { PlantFormComponent } from './plant-form/plant-form.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'plant/new', component: PlantFormComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],

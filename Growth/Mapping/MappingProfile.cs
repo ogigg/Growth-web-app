@@ -14,6 +14,7 @@ namespace Growth.Mapping
         {
             CreateMap<Order, OrderResource>();
             CreateMap<Species, SpeciesResource>();
+            CreateMap<Feature, FeatureResource > ();
         }
     }
 }

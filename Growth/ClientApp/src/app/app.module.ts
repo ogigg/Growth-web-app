@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { PlantFormComponent } from './components/plant-form/plant-form.component';
 import { OrderService } from './services/order.service';
+import { FeatureService } from './services/feature.service';
 
 
 
@@ -34,7 +35,7 @@ import { OrderService } from './services/order.service';
       { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
-  providers: [OrderService],
+  providers: [OrderService,FeatureService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

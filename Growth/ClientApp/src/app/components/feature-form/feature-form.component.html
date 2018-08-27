@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit(featureForm)" #featureForm="ngForm">
+  <h2>Add new feature</h2>
+  <div class="form-group">
+    <label for="feature">Feature</label>
+    <input class="form-control" 
+    id="feature" 
+    placeholder="Enter feature name" 
+    required
+    name="name"
+    #name="ngModel"
+    [(ngModel)]="featureForm.name">
+  </div>
+  <button type="submit" class="btn btn-primary" >Submit</button>
+</form>

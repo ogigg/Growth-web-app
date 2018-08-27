@@ -9,9 +9,9 @@ import {OrderService} from '../../services/order.service';
   styleUrls: ['./plant-form.component.css']
 })
 export class PlantFormComponent implements OnInit {
-  orders: any[];
-  species: any[];
-  features: any[];
+  orders: any;
+  species: any;
+  features: any;
   plant:any = {};
   constructor(
     private orderService : OrderService,

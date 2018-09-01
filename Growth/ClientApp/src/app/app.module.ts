@@ -34,7 +34,9 @@ import { FeatureFormComponent } from './components/feature-form/feature-form.com
       { path: 'counter', component: CounterComponent },
       { path: 'plant/new', component: PlantFormComponent },
       { path: 'features', component: FeatureFormComponent },
+      { path: 'features/:id', component: FeatureFormComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: '**', component: HomeComponent }
     ])
   ],
   providers: [OrderService,FeatureService],

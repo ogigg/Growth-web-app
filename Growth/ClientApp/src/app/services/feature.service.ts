@@ -18,8 +18,21 @@ export class FeatureService {
     return this.http.get('/api/features');
   }
 
-  createFeature(feature: Feature) {
-    var body = JSON.stringify(feature);
-    return this.http.post('/api/features', body,this.httpOptions);
+  getFeature(id: number) {
+    return this.http.get('/api/features/'+id);
   }
+
+  createFeature(feature: string) {
+    var body = JSON.stringify(feature);
+    //"{name: '"+feature+"' }"
+    return this.http.post('/api/features', body , this.httpOptions);
+  }
+
+  updateFeature(feature: Feature, id: number) {
+    var body = JSON.stringify(feature);
+    return this.http.post('/api/features/'+id, body,this.httpOptions);
+  }
+
+
+
 }

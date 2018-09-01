@@ -4,20 +4,23 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 using AutoMapper;
 using Growth.Controllers.Resources;
 using Growth.Models;
 using Growth.Persistence;
-using System.Web.Http;
+using System.Web.Http.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
+
 
 namespace Growth.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class FeatureController : ControllerBase
+    public class FeatureController : ApiController
     {
 
         private GrowthDbContext _context { get; }
@@ -30,15 +33,37 @@ namespace Growth.Controllers
         }
 
 
-
-        [HttpGet("/api/features")]
-        public async Task<ICollection<FeatureResource>> GetFeatures()
+        [Microsoft.AspNetCore.Mvc.HttpGet("/api/features/{id}")]
+        public Feature GetFeature(int id)
         {
-            var feature = await _context.Features.ToListAsync();
-            return _mapper.Map<List<Feature>, List<FeatureResource>>(feature);
+            return _context.Features.SingleOrDefault(f=>f.Id == id);
+            
+        }
+        [Microsoft.AspNetCore.Mvc.HttpPut("/api/features/{id}")]
+        public IActionResult UpdateFeature(Feature feature, int id)
+        {
+            if (!ModelState.IsValid)
+                return new BadRequestResult();
+
+            var featureInDb = _context.Features.SingleOrDefault(f => f.Id == id);
+
+            if (featureInDb == null)
+                return new NotFoundResult();
+
+            _mapper.Map(feature, featureInDb);
+            _context.SaveChanges();
+
+            return new OkResult();
         }
 
-        [HttpPost("/api/features")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("/api/features")]
+        public async Task<ICollection<FeatureResource>> GetFeatures()
+        {
+            var features = await _context.Features.ToListAsync();
+            return _mapper.Map<List<Feature>, List<FeatureResource>>(features);
+        }
+
+        [Microsoft.AspNetCore.Mvc.HttpPost("/api/features")]
         public IActionResult CreateFeature( Feature feature)
         {
 
@@ -50,4 +75,5 @@ namespace Growth.Controllers
         }
 
     }
+
 }

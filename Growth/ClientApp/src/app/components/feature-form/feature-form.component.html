@@ -1,9 +1,10 @@
-<form (ngSubmit)="onSubmit(form)" #form="ngForm">
+<form (ngSubmit)="onSubmit(form) " #form="ngForm">
 
     <div *ngIf="id != 0; then editForm else newForm"></div>
     <ng-template #newForm> <h2>Add new feature</h2></ng-template>
-    <ng-template #editForm> <h2>Edit feature with id {{id}}</h2></ng-template>
+    <ng-template #editForm> <h2>Edit feature with id {{f.id}}</h2></ng-template>
   <div class="form-group">
+    <input type="hidden" name="id" [(ngModel)]="f.id">
     <label for="feature">Feature</label>
     <input class="form-control"
     type="text"

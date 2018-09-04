@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 using AutoMapper;
 using Growth.Controllers.Resources;
 using Growth.Models;
@@ -14,13 +15,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using BadRequestResult = Microsoft.AspNetCore.Mvc.BadRequestResult;
+using NotFoundResult = Microsoft.AspNetCore.Mvc.NotFoundResult;
+using OkResult = Microsoft.AspNetCore.Mvc.OkResult;
 
 
 namespace Growth.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class FeatureController : ApiController
+    public class FeatureController : ControllerBase
     {
 
         private GrowthDbContext _context { get; }
@@ -39,21 +43,30 @@ namespace Growth.Controllers
             return _context.Features.SingleOrDefault(f=>f.Id == id);
             
         }
+
+        
         [Microsoft.AspNetCore.Mvc.HttpPut("/api/features/{id}")]
-        public IActionResult UpdateFeature(Feature feature, int id)
+        public IActionResult UpdateFeature([Microsoft.AspNetCore.Mvc.FromBody] Feature feature, int id)
         {
             if (!ModelState.IsValid)
-                return new BadRequestResult();
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != feature.Id)
+            {
+                return BadRequest();
+            }
 
             var featureInDb = _context.Features.SingleOrDefault(f => f.Id == id);
-
             if (featureInDb == null)
-                return new NotFoundResult();
+                return NotFound();
 
-            _mapper.Map(feature, featureInDb);
+            featureInDb.Name = feature.Name;
+
             _context.SaveChanges();
 
-            return new OkResult();
+            return NoContent();
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet("/api/features")]

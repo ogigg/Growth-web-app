@@ -24,13 +24,12 @@ export class FeatureService {
 
   createFeature(feature: string) {
     var body = JSON.stringify(feature);
-    //"{name: '"+feature+"' }"
     return this.http.post('/api/features', body , this.httpOptions);
   }
 
   updateFeature(feature: Feature, id: number) {
     var body = JSON.stringify(feature);
-    return this.http.post('/api/features/'+id, body,this.httpOptions);
+    return this.http.put('/api/features/'+id, body ,this.httpOptions);
   }
 
 

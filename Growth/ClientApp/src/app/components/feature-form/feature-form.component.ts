@@ -29,7 +29,7 @@ export class FeatureFormComponent implements OnInit {
   }
 
   onSubmit(form) {
-    console.log(this.f.name );
+    console.log(form.value);
     console.log(this.id);
     if(this.id === 0){ //empty form
       this.featureService.createFeature(form.value)

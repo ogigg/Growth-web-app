@@ -36,15 +36,12 @@ namespace Growth.Controllers
             _mapper = mapper;
         }
 
-
         [Microsoft.AspNetCore.Mvc.HttpGet("/api/features/{id}")]
         public Feature GetFeature(int id)
         {
             return _context.Features.SingleOrDefault(f=>f.Id == id);
-            
         }
 
-        
         [Microsoft.AspNetCore.Mvc.HttpPut("/api/features/{id}")]
         public IActionResult UpdateFeature([Microsoft.AspNetCore.Mvc.FromBody] Feature feature, int id)
         {
@@ -66,7 +63,7 @@ namespace Growth.Controllers
 
             _context.SaveChanges();
 
-            return NoContent();
+            return new JsonResult("Succes, feature with id: " + id + " is now: " + feature.Name);
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet("/api/features")]
@@ -84,9 +81,20 @@ namespace Growth.Controllers
                 _context.Add(feature);
             _context.SaveChangesAsync();
 
-            return new OkObjectResult(feature.Name);
+            return new JsonResult("Succes, feature: " + feature.Name + " created!");
         }
 
+        [Microsoft.AspNetCore.Mvc.HttpDelete("/api/features/{id}")]
+        public IActionResult DeleteFeature(int id)
+        {
+            var featureInDb = _context.Features.SingleOrDefault(f => f.Id == id);
+            if (featureInDb == null)
+                return NotFound();
+            _context.Remove(featureInDb);
+            _context.SaveChangesAsync();
+
+            return new JsonResult("Succes, feature with id: "+id+" deleted!");
+        }
     }
 
 }

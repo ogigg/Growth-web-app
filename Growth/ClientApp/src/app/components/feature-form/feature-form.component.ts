@@ -3,7 +3,8 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { FeatureService } from '../../services/feature.service';
 import { NgForm, NgModel, FormBuilder, FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
-
+import { ToastrService } from 'ngx-toastr';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-feature-form',
@@ -13,31 +14,71 @@ import { ActivatedRoute } from '@angular/router';
 export class FeatureFormComponent implements OnInit {
   f = {};
   id:number;
+  isNewForm: boolean = true;
+
   constructor(
     private featureService: FeatureService,
-    private route: ActivatedRoute    
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private location: Location
   ) 
   {
     this.route.paramMap.subscribe(params => this.id = +params.get('id'));
     if(this.id != 0)
+    {
       this.featureService.getFeature(this.id).subscribe(feature => this.f = feature);
+      this.isNewForm = false;
+    }
+      
    }
 
 
   ngOnInit() {
+    //todo delet dis
     console.log(this.id);
+    console.log(this.isNewForm);
   }
-
+  onDelete() {
+    this.featureService.deleteFeature(this.id)      
+    .subscribe(
+      data => {
+          console.log(data);
+          this.toastr.success("Usunięto cechę","Sukces");
+      },
+      error => {
+          console.log("Error", error);
+          this.toastr.error("Wystąpił bład ¯\\_(ツ)_/¯","Błąd");
+      });
+      this.location.back();
+    }
   onSubmit(form) {
+    //this.toastr.success("Cecha została poprawnie edytowana!","Sukces!");
     console.log(form.value);
     console.log(this.id);
-    if(this.id === 0){ //empty form
+    if(this.isNewForm){ 
       this.featureService.createFeature(form.value)
-      .subscribe(response => console.log(response));
+      .subscribe(
+        data => {
+            console.log(data);
+            this.toastr.success("Dodano cechę","Sukces");
+        },
+        error => {
+            console.log("Error", error);
+            this.toastr.error("Wystąpił bład ¯\\_(ツ)_/¯","Błąd");
+        });
     }
-    else{ //edit form
+    else{ 
       this.featureService.updateFeature(form.value, this.id)
-      .subscribe(response => console.log(response));
+      .subscribe(
+        data => {
+            console.log(data);
+            this.toastr.success("Edytowano cechę","Sukces");
+        },
+        error => {
+            console.log("Error", error);
+            this.toastr.error("Wystąpił bład ¯\\_(ツ)_/¯","Błąd");
+        }
+    );  
   }  
   }
 }

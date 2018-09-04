@@ -11,7 +11,8 @@ export class FeatureService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json'
+      'Content-Type':  'application/json',
+      'responseType' : 'xhr'
     })
   };
   getFeatures() {
@@ -30,6 +31,10 @@ export class FeatureService {
   updateFeature(feature: Feature, id: number) {
     var body = JSON.stringify(feature);
     return this.http.put('/api/features/'+id, body ,this.httpOptions);
+  }
+  
+  deleteFeature(id: number) {
+    return this.http.delete('/api/features/'+id,this.httpOptions);
   }
 
 

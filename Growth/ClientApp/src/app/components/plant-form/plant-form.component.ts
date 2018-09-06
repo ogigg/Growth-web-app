@@ -16,11 +16,12 @@ export class PlantFormComponent implements OnInit {
   constructor(
     private orderService : OrderService,
     private featureService: FeatureService
-  ) { }
+  ) { this.orderService.getOrders().subscribe(orders => this.orders = orders);
+    this.featureService.getFeatures().subscribe(features => this.features = features);
+  }
 
   ngOnInit() {
-    this.orderService.getOrders().subscribe(orders => this.orders = orders);
-    this.featureService.getFeatures().subscribe(features => this.features = features);
+
   }
   onOrderChange() {
     var selectedOrder = this.orders.find(o => o.id == this.plant.order);

@@ -15,6 +15,8 @@ import { PlantFormComponent } from './components/plant-form/plant-form.component
 import { OrderService } from './services/order.service';
 import { FeatureService } from './services/feature.service';
 import { FeatureFormComponent } from './components/feature-form/feature-form.component';
+import { OrderFormComponent } from './components/order-form/order-form.component';
+import { SpeciesFormComponent } from './components/species-form/species-form.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FeatureFormComponent } from './components/feature-form/feature-form.com
     CounterComponent,
     FetchDataComponent,
     PlantFormComponent,
-    FeatureFormComponent
+    FeatureFormComponent,
+    OrderFormComponent,
+    SpeciesFormComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +42,8 @@ import { FeatureFormComponent } from './components/feature-form/feature-form.com
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'plant/new', component: PlantFormComponent },
+      { path: 'orders', component: OrderFormComponent },
+      { path: 'species', component: SpeciesFormComponent },
       { path: 'features', component: FeatureFormComponent },
       { path: 'features/:id', component: FeatureFormComponent },
       { path: 'fetch-data', component: FetchDataComponent },

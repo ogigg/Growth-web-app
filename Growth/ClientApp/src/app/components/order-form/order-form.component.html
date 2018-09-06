@@ -1,0 +1,19 @@
+<form #form="ngForm">
+
+  <h2 *ngIf=isNewForm>Add new order</h2>
+  <h2 *ngIf=!isNewForm >Edit oder with id {{f.id}}</h2>
+<div class="form-group">
+  <input type="hidden" name="id" [(ngModel)]="f.id">
+  <label for="order">Order</label>
+  <input class="form-control"
+  type="text"
+  id="order" 
+  name="name"
+  placeholder="Enter order name"
+  required
+  [(ngModel)]="f.name">
+  
+</div>
+<button (click)="onSubmit(form)" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+<button (click)="onDelete()" class="btn btn-danger" *ngIf=!isNewForm style="margin-left: 5px">Delete</button>
+</form>

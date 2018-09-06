@@ -34,10 +34,8 @@ export class FeatureFormComponent implements OnInit {
 
 
   ngOnInit() {
-    //todo delet dis
-    console.log(this.id);
-    console.log(this.isNewForm);
   }
+
   onDelete() {
     this.featureService.deleteFeature(this.id)      
     .subscribe(
@@ -52,9 +50,6 @@ export class FeatureFormComponent implements OnInit {
       this.location.back();
     }
   onSubmit(form) {
-    //this.toastr.success("Cecha została poprawnie edytowana!","Sukces!");
-    console.log(form.value);
-    console.log(this.id);
     if(this.isNewForm){ 
       this.featureService.createFeature(form.value)
       .subscribe(
@@ -80,5 +75,6 @@ export class FeatureFormComponent implements OnInit {
         }
     );  
   }  
+  this.location.back();
   }
 }

@@ -1,14 +1,14 @@
 <form>
   <h2>Dodaj nową roślinę</h2>
   <div class="form-group">
-    <label for="order">Rząd</label> <span style="float: right; color:green" class='	glyphicon glyphicon-plus'></span>
+    <label for="order">Rząd</label> <a [routerLink]='["/orders"]'> <span style="float: right; color:green" class='	glyphicon glyphicon-plus'></span> </a>
     <select id="order" class="form-control" (change)="onOrderChange()"  name="order" [(ngModel)]="plant.order" >
       <option value="">Wybierz rząd</option>
       <option *ngFor="let o of orders" value="{{o.id}}">{{o.name}}</option>
     </select>
   </div>
   <div class="form-group">
-    <label for="species">Gatunek</label> <span style="float: right; color:green" class='glyphicon glyphicon-plus'></span>
+    <label for="species">Gatunek</label> <a [routerLink]='["/species"]'><span style="float: right; color:green" class='glyphicon glyphicon-plus'></span> </a>
     <select id="species" class="form-control">
       <option value="">Wybierz gatunek</option>
       <option *ngFor="let s of species" value="{{s.id}}">{{s.name}}</option>

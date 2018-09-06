@@ -33,7 +33,18 @@ namespace Growth.Controllers
             var orders = await _context.Orders.Include(o=>o.Species).ToListAsync();
             return _mapper.Map<List<Order>, List<OrderResource>>(orders);
         }
-        
+
+        [HttpPost("/api/orders")]
+        public IActionResult CreateOrder(Order order)
+        {
+
+            if (ModelState.IsValid)
+                _context.Add(order);
+            _context.SaveChangesAsync();
+
+            return new JsonResult("Succes, order: " + order.Name + " created!");
+        }
+
 
     }
 }

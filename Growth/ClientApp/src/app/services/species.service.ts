@@ -23,8 +23,9 @@ export class SpeciesService {
     return this.http.get('/api/species/'+id);
   }
   
-  createSpecies(order: string) {
+  createSpecies(order: any) {
     var body = JSON.stringify(order);
+    console.log(body);
     return this.http.post('/api/species', body, this.httpOptions);
   }
 

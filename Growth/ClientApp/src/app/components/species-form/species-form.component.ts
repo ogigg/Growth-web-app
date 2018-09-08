@@ -3,6 +3,7 @@ import { SpeciesService } from '../../services/species.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {Location} from '@angular/common';
+import { OrderService } from '../../services/order.service';
 
 
 @Component({
@@ -13,9 +14,11 @@ import {Location} from '@angular/common';
 export class SpeciesFormComponent implements OnInit {
   s = {};
   id:number;
+  orders: any;
   isNewForm: boolean = true;
   constructor(    
     private speciesService: SpeciesService,
+    private orderService : OrderService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private location: Location
@@ -25,8 +28,9 @@ export class SpeciesFormComponent implements OnInit {
     {
       this.speciesService.getOneSpecies(this.id).subscribe(species => this.s = species);
       this.isNewForm = false;
-      console.log(this.id);
-      console.log(this.s);
+    }
+    else{
+      this.orderService.getOrders().subscribe(orders => this.orders = orders)
     }
    }
 

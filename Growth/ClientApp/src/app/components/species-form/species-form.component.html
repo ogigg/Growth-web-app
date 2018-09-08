@@ -4,7 +4,7 @@
     <h2 *ngIf=!isNewForm >Edit species with id {{s.id}}</h2>
   <div class="form-group">
     <input type="hidden" name="id" [(ngModel)]="s.id">
-    <label for="species">Species</label>
+    <label for="species">Gatunek</label>
     <input class="form-control"
     type="text"
     id="species" 
@@ -12,7 +12,13 @@
     placeholder="Enter species name"
     required
     [(ngModel)]="s.name">
-    
+    <div *ngIf=isNewForm>
+    <label for="order">Rząd nowego gatunku</label> 
+    <select  id="order" class="form-control" name="orderId" [(ngModel)]="s.orderId" >
+      <option value="">Wybierz rząd</option>
+      <option *ngFor="let o of orders" value="{{o.id}}">{{o.name}}</option>
+    </select>
+  </div>
   </div>
   <button (click)="onSubmit(form)" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
   <button (click)="onDelete()" class="btn btn-danger" *ngIf=!isNewForm style="margin-left: 5px">Delete</button>

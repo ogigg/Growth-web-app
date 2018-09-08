@@ -33,11 +33,15 @@ namespace Growth.Controllers
             var orders = await _context.Orders.Include(o=>o.Species).ToListAsync();
             return _mapper.Map<List<Order>, List<OrderResource>>(orders);
         }
+        [HttpGet("/api/orders/{id}")]
+        public Order GetOrder(int id)
+        {
+            return _context.Orders.Include(o => o.Species).SingleOrDefault(o => o.Id == id);
+        }
 
         [HttpPost("/api/orders")]
         public IActionResult CreateOrder(Order order)
         {
-
             if (ModelState.IsValid)
                 _context.Add(order);
             _context.SaveChangesAsync();
@@ -45,6 +49,40 @@ namespace Growth.Controllers
             return new JsonResult("Succes, order: " + order.Name + " created!");
         }
 
+        [HttpPut("/api/orders/{id}")]
+        public IActionResult UpdateOrder([FromBody] Order order, int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (id != order.Id)
+            {
+                return BadRequest();
+            }
+
+            var orderInDb = _context.Orders.SingleOrDefault(o => o.Id == id);
+            if (orderInDb == null)
+                return NotFound();
+
+            orderInDb.Name = order.Name;
+
+            _context.SaveChanges();
+
+            return new JsonResult("Succes, order with id: " + id + " is now: " + order.Name);
+        }
+
+        [HttpDelete("/api/orders/{id}")]
+        public IActionResult DeleteOrder(int id)
+        {
+            var orderInDb = _context.Orders.SingleOrDefault(s => s.Id == id);
+            if (orderInDb == null)
+                return NotFound();
+            _context.Remove(orderInDb);
+            _context.SaveChangesAsync();
+
+            return new JsonResult("Succes, order with id: " + id + " deleted!");
+        }
     }
 }

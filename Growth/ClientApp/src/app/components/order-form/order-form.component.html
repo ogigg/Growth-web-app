@@ -1,9 +1,9 @@
 <form #form="ngForm">
 
   <h2 *ngIf=isNewForm>Add new order</h2>
-  <h2 *ngIf=!isNewForm >Edit oder with id {{f.id}}</h2>
+  <h2 *ngIf=!isNewForm >Edit oder with id {{o.id}}</h2>
 <div class="form-group">
-  <input type="hidden" name="id" [(ngModel)]="f.id">
+  <input type="hidden" name="id" [(ngModel)]="o.id">
   <label for="order">Order</label>
   <input class="form-control"
   type="text"
@@ -11,7 +11,7 @@
   name="name"
   placeholder="Enter order name"
   required
-  [(ngModel)]="f.name">
+  [(ngModel)]="o.name">
   
 </div>
 <button (click)="onSubmit(form)" class="btn btn-primary" [disabled]="!form.valid">Submit</button>

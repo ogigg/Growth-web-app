@@ -1,3 +1,20 @@
-<p>
-  species-form works!
-</p>
+<form #form="ngForm">
+
+    <h2 *ngIf=isNewForm>Add new species</h2>
+    <h2 *ngIf=!isNewForm >Edit species with id {{s.id}}</h2>
+  <div class="form-group">
+    <input type="hidden" name="id" [(ngModel)]="s.id">
+    <label for="species">Species</label>
+    <input class="form-control"
+    type="text"
+    id="species" 
+    name="name"
+    placeholder="Enter species name"
+    required
+    [(ngModel)]="s.name">
+    
+  </div>
+  <button (click)="onSubmit(form)" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+  <button (click)="onDelete()" class="btn btn-danger" *ngIf=!isNewForm style="margin-left: 5px">Delete</button>
+  </form>
+  

@@ -11,15 +11,27 @@ namespace Growth.Persistence
 {
     public class GrowthDbContext : DbContext
     {
-        public GrowthDbContext(DbContextOptions<GrowthDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<Species> Species { get; set; }
 
         public DbSet<Feature> Features { get; set; }
+
+        public DbSet<Plant> Plants { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public GrowthDbContext(DbContextOptions<GrowthDbContext> options) : base(options)
+        {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlantFeature>().HasKey(pf =>
+                new {pf.PlantId, pf.FeatureId});
+        }
+
 
     }
 }

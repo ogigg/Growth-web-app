@@ -23,7 +23,8 @@
       <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
    </a>
     <select id="species" class="form-control" name="species" [(ngModel)]="plant.species">
-      <option value="">Wybierz gatunek</option>
+      <option *ngIf="species==null" value="0">Najpierw wybierz rząd</option>
+      <option *ngIf="species!=null" value="0">Wybierz gatunek</option>
       <option *ngFor="let s of species" value="{{s.id}}">{{s.name}}</option>
     </select>
   </div>
@@ -35,6 +36,6 @@
        <span style="padding-left: 10px" [routerLink]='["/features/"+f.id]' class='glyphicon glyphicon-edit'></span>
     </div>
 
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button type="submit" class="btn btn-default">Utwórz</button>
 </form>
 

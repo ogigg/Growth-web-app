@@ -24,13 +24,13 @@ namespace Growth.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class FeatureController : ControllerBase
+    public class FeaturesController : ControllerBase
     {
 
         private GrowthDbContext _context { get; }
         private IMapper _mapper { get; }
 
-        public FeatureController(GrowthDbContext context, IMapper mapper)
+        public FeaturesController(GrowthDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

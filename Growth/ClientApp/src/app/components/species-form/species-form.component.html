@@ -14,7 +14,7 @@
     [(ngModel)]="s.name">
     <div *ngIf=isNewForm>
     <label for="order">Rząd nowego gatunku</label> 
-    <select  id="order" class="form-control" name="orderId" [(ngModel)]="s.orderId" >
+    <select required id="order" class="form-control" name="orderId" [(ngModel)]="s.orderId" >
       <option value="">Wybierz rząd</option>
       <option *ngFor="let o of orders" value="{{o.id}}">{{o.name}}</option>
     </select>

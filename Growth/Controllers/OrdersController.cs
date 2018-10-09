@@ -14,12 +14,12 @@ namespace Growth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private GrowthDbContext _context { get; }
         private IMapper _mapper { get; }
 
-        public OrderController(GrowthDbContext context, IMapper mapper)
+        public OrdersController(GrowthDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

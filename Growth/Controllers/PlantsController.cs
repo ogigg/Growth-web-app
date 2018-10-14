@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Growth.Controllers.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,17 +17,18 @@ namespace Growth.Controllers
     public class PlantsController : ControllerBase
     {
         private readonly GrowthDbContext _context;
-
-        public PlantsController(GrowthDbContext context)
+        private readonly IMapper _mapper;
+        public PlantsController(GrowthDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
         // GET: api/Plants
         [HttpGet]
-        public IEnumerable<Plant> GetPlants()
+        public IActionResult GetPlants()
         {
-            return _context.Plants;
+            return Ok(_context.Plants);
         }
 
         // GET: api/Plants/5
@@ -38,7 +41,7 @@ namespace Growth.Controllers
             }
 
             var plant = await _context.Plants.FindAsync(id);
-
+            
             if (plant == null)
             {
                 return NotFound();
@@ -49,52 +52,36 @@ namespace Growth.Controllers
 
         // PUT: api/Plants/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlant([FromRoute] int id, [FromBody] Plant plant)
+        public async Task<IActionResult> PutPlant([FromRoute] int id, [FromBody] PlantResource plantResource)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            if (id != plant.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(plant).State = EntityState.Modified;
+            var plant = await _context.Plants.Include(p => p.Features).SingleOrDefaultAsync(p => p.Id == id);
+            _mapper.Map<PlantResource, Plant>(plantResource, plant);
+            await _context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            //var result = _mapper.Map<Plant, PlantResource>(plant);
+            return Ok(plant);
         }
 
         // POST: api/Plants
         [HttpPost]
-        public async Task<IActionResult> PostPlant([FromBody] Plant plant)
+        public async Task<IActionResult> PostPlant([FromBody] PlantResource plantResource)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var plant = _mapper.Map<PlantResource, Plant>(plantResource);
             _context.Plants.Add(plant);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlant", new { id = plant.Id }, plant);
+            var result = _mapper.Map<Plant, PlantResource>(plant);
+
+            return Ok(result);
         }
 
         // DELETE: api/Plants/5

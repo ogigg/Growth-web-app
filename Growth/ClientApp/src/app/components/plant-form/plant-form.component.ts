@@ -1,3 +1,4 @@
+import { PlantService } from './../../services/plant.service';
 import { FeatureService } from './../../services/feature.service';
 import { Component, OnInit } from '@angular/core';
 import {OrderService} from '../../services/order.service';
@@ -15,7 +16,9 @@ export class PlantFormComponent implements OnInit {
   plant:any = {};
   constructor(
     private orderService : OrderService,
-    private featureService: FeatureService
+    private featureService: FeatureService,
+    private plantService: PlantService
+    
   ) { this.orderService.getOrders().subscribe(orders => this.orders = orders);
     this.featureService.getFeatures().subscribe(features => this.features = features);
   }
@@ -28,4 +31,17 @@ export class PlantFormComponent implements OnInit {
     this.species = selectedOrder ? selectedOrder.species : [];
   }
 
+  onSubmit(form) {
+    console.log(form.value);
+      this.plantService.createPlant(form.value)
+      .subscribe(
+        data => {
+            console.log(data);
+        },
+        error => {
+            console.log("Error", error);
+
+        });
+    
+      }
 }

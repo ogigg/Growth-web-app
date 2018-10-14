@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Growth.Migrations
 {
     [DbContext(typeof(GrowthDbContext))]
-    [Migration("20181009183459_AddPlant")]
-    partial class AddPlant
+    [Migration("20181014125733_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,15 +74,9 @@ namespace Growth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("FeatureId");
-
-                    b.Property<int?>("SpeciesId");
-
-                    b.Property<int>("SpeciesIs");
+                    b.Property<int>("SpeciesId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FeatureId");
 
                     b.HasIndex("SpeciesId");
 
@@ -130,13 +124,10 @@ namespace Growth.Migrations
 
             modelBuilder.Entity("Growth.Models.Plant", b =>
                 {
-                    b.HasOne("Growth.Models.Feature")
-                        .WithMany("Plants")
-                        .HasForeignKey("FeatureId");
-
                     b.HasOne("Growth.Models.Species", "Species")
                         .WithMany()
-                        .HasForeignKey("SpeciesId");
+                        .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Growth.Models.PlantFeature", b =>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Growth.Migrations
 {
     [DbContext(typeof(GrowthDbContext))]
-    [Migration("20180824204756_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20181014130218_DropWholeDatabase")]
+    partial class DropWholeDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,8 +29,6 @@ namespace Growth.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("PlantId");
-
                     b.Property<int?>("SpeciesId");
 
                     b.HasKey("Id");
@@ -38,6 +36,21 @@ namespace Growth.Migrations
                     b.HasIndex("SpeciesId");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("Growth.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Growth.Models.Order", b =>
@@ -53,6 +66,34 @@ namespace Growth.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Growth.Models.Plant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("SpeciesId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpeciesId");
+
+                    b.ToTable("Plants");
+                });
+
+            modelBuilder.Entity("Growth.Models.PlantFeature", b =>
+                {
+                    b.Property<int>("PlantId");
+
+                    b.Property<int>("FeatureId");
+
+                    b.HasKey("PlantId", "FeatureId");
+
+                    b.HasIndex("FeatureId");
+
+                    b.ToTable("PlantFeatures");
                 });
 
             modelBuilder.Entity("Growth.Models.Species", b =>
@@ -79,6 +120,27 @@ namespace Growth.Migrations
                     b.HasOne("Growth.Models.Species")
                         .WithMany("Features")
                         .HasForeignKey("SpeciesId");
+                });
+
+            modelBuilder.Entity("Growth.Models.Plant", b =>
+                {
+                    b.HasOne("Growth.Models.Species", "Species")
+                        .WithMany()
+                        .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Growth.Models.PlantFeature", b =>
+                {
+                    b.HasOne("Growth.Models.Feature", "Feature")
+                        .WithMany()
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Growth.Models.Plant", "Plant")
+                        .WithMany("Features")
+                        .HasForeignKey("PlantId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Growth.Models.Species", b =>

@@ -1,4 +1,4 @@
-<form>
+<form  #form="ngForm">
   <h2>Dodaj nową roślinę</h2>
   <div class="form-group">
     <label for="order">Rząd</label> 
@@ -36,6 +36,6 @@
        <span style="padding-left: 10px" [routerLink]='["/features/"+f.id]' class='glyphicon glyphicon-edit'></span>
     </div>
 
-  <button type="submit" class="btn btn-default">Utwórz</button>
+  <button (click)="onSubmit(form)" class="btn btn-default">Utwórz</button>
 </form>
 

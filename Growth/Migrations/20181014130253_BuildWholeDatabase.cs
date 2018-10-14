@@ -3,10 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Growth.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class BuildWholeDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+    name: "Images",
+    columns: table => new
+    {
+        Name = table.Column<string>(nullable: true),
+        Path = table.Column<string>(nullable: true),
+        Id = table.Column<int>(nullable: false)
+            .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+    },
+    constraints: table =>
+    {
+        table.PrimaryKey("PK_Images", x => x.Id);
+    });
+
             migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
@@ -47,7 +61,6 @@ namespace Growth.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    PlantId = table.Column<int>(nullable: false),
                     SpeciesId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -61,31 +74,83 @@ namespace Growth.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Plants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SpeciesId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Plants_Species_SpeciesId",
+                        column: x => x.SpeciesId,
+                        principalTable: "Species",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlantFeatures",
+                columns: table => new
+                {
+                    PlantId = table.Column<int>(nullable: false),
+                    FeatureId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlantFeatures", x => new { x.PlantId, x.FeatureId });
+                    table.ForeignKey(
+                        name: "FK_PlantFeatures_Features_FeatureId",
+                        column: x => x.FeatureId,
+                        principalTable: "Features",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlantFeatures_Plants_PlantId",
+                        column: x => x.PlantId,
+                        principalTable: "Plants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Features_SpeciesId",
                 table: "Features",
                 column: "SpeciesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlantFeatures_FeatureId",
+                table: "PlantFeatures",
+                column: "FeatureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plants_SpeciesId",
+                table: "Plants",
+                column: "SpeciesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Species_OrderId",
                 table: "Species",
                 column: "OrderId");
-
-            migrationBuilder.Sql("INSERT INTO Orders (Name) VALUES ('astrowce')");
-            migrationBuilder.Sql("INSERT INTO Orders (Name) VALUES ('różowce')");
-            migrationBuilder.Sql("INSERT INTO Orders (Name) VALUES ('goryczkowce')");
-
-            migrationBuilder.Sql("INSERT INTO Species (Name, OrderId) VALUES ('Mniszek pospolity', (SELECT ID FROM Orders WHERE Name='astrowce'))");
-            migrationBuilder.Sql("INSERT INTO Species (Name, OrderId) VALUES ('Pokrzywa', (SELECT ID FROM Orders WHERE Name='różowce'))");
-            migrationBuilder.Sql("INSERT INTO Species (Name, OrderId) VALUES ('Kawowiec', (SELECT ID FROM Orders WHERE Name='goryczkowce'))");
-
         }
-
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "PlantFeatures");
+
+            migrationBuilder.DropTable(
                 name: "Features");
+
+            migrationBuilder.DropTable(
+                name: "Plants");
 
             migrationBuilder.DropTable(
                 name: "Species");

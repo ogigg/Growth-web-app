@@ -13,7 +13,7 @@ namespace Growth.Models
             this.Features = new Collection<PlantFeature>();
         }
         public int Id { get; set; }
-        public int SpeciesIs { get; set; }
+        public int SpeciesId { get; set; }
         public Species Species { get; set; }
 
 

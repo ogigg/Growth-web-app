@@ -13,7 +13,9 @@ export class PlantFormComponent implements OnInit {
   orders: any;
   species: any;
   features: any;
-  plant:any = {};
+  plant:any = {
+    features: []
+  };
   constructor(
     private orderService : OrderService,
     private featureService: FeatureService,
@@ -27,13 +29,22 @@ export class PlantFormComponent implements OnInit {
 
   }
   onOrderChange() {
-    var selectedOrder = this.orders.find(o => o.id == this.plant.order);
+    var selectedOrder = this.orders.find(o => o.id == this.plant.orderId);
     this.species = selectedOrder ? selectedOrder.species : [];
   }
+  onChangeFeature(featureId,$event){
+    if($event.target.checked)
+      this.plant.features.push(featureId);
+    else{
+      var index = this.plant.features.indexOf(featureId);
+      this.plant.features.splice(index,1);
+    }
+   
+  }
 
-  onSubmit(form) {
-    console.log(form.value);
-      this.plantService.createPlant(form.value)
+  onSubmit() {
+    console.log(this.plant);
+      this.plantService.createPlant(this.plant)
       .subscribe(
         data => {
             console.log(data);

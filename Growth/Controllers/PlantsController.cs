@@ -26,9 +26,12 @@ namespace Growth.Controllers
 
         // GET: api/Plants
         [HttpGet]
-        public IActionResult GetPlants()
+        public IEnumerable<PlantResource> GetPlants()
         {
-            return Ok(_context.Plants);
+            var plants = _context.Plants.Include(p => p.Features)
+                .ThenInclude(f=>f.Feature).Include(p=>p.Species)
+                .ToList().Select(_mapper.Map<Plant, PlantResource>);
+            return plants;
         }
 
         // GET: api/Plants/5
@@ -40,8 +43,8 @@ namespace Growth.Controllers
                 return BadRequest(ModelState);
             }
 
-            var plant = await _context.Plants.FindAsync(id);
-            
+            var plant = _mapper.Map<Plant, PlantResource>(_context.Plants.Include(p => p.Features).SingleOrDefault(p => p.Id == id));
+
             if (plant == null)
             {
                 return NotFound();

@@ -8,7 +8,7 @@
     <a [hidden] = "!plant.order" [routerLink]='["/orders/"+plant.order]'>
        <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
     </a>
-    <select id="order" class="form-control" (change)="onOrderChange()" name="order" [(ngModel)]="plant.order" >
+    <select id="order" class="form-control" (change)="onOrderChange()" name="order" [(ngModel)]="plant.orderId" required>
       <option value="">Wybierz rząd</option>
       <option *ngFor="let o of orders" value="{{o.id}}">{{o.name}}</option>
     </select>
@@ -19,10 +19,10 @@
     <a [routerLink]='["/species"]'>
       <span style="float: right; color:green" class='glyphicon glyphicon-plus'></span> 
     </a>
-    <a [hidden] = "!plant.species" [routerLink]='["/species/"+plant.species]'>
+    <a [hidden] = "!plant.species" [routerLink]='["/species/"+plant.speciesId]'>
       <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
    </a>
-    <select id="species" class="form-control" name="species" [(ngModel)]="plant.species">
+    <select id="species" class="form-control" name="speciesId" [(ngModel)]="plant.speciesId" required>
       <option *ngIf="species==null" value="0">Najpierw wybierz rząd</option>
       <option *ngIf="species!=null" value="0">Wybierz gatunek</option>
       <option *ngFor="let s of species" value="{{s.id}}">{{s.name}}</option>
@@ -31,11 +31,11 @@
     <label>Cechy</label>  <a [routerLink]='["/features"]'><span style="float: right; color:green" class='	glyphicon glyphicon-plus'></span> </a>
   <div *ngFor="let f of features" class="checkbox">
     <label for="feature{{ f.id }}">
-      <input type="checkbox" id="feature{{ f.id }}"> {{f.name}}
+      <input type="checkbox" id="feature{{ f.id }}" (change)="onChangeFeature(f.id,$event)"> {{f.name}}
     </label>
        <span style="padding-left: 10px" [routerLink]='["/features/"+f.id]' class='glyphicon glyphicon-edit'></span>
     </div>
 
-  <button (click)="onSubmit(form)" class="btn btn-default">Utwórz</button>
+  <button (click)="onSubmit()" class="btn btn-primary " [disabled]="!form.valid || plant.speciesId==0 || !plant.features.length > 0">Utwórz</button>
 </form>
 

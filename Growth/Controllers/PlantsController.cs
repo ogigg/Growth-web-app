@@ -29,7 +29,7 @@ namespace Growth.Controllers
         public IEnumerable<PlantResource> GetPlants()
         {
             var plants = _context.Plants.Include(p => p.Features)
-                .ThenInclude(f=>f.Feature).Include(p=>p.Species)
+                .ThenInclude(f=>f.Feature).Include(p=>p.Species).Include(p=>p.Image)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
             return plants;
         }
@@ -66,7 +66,7 @@ namespace Growth.Controllers
             await _context.SaveChangesAsync();
 
             //var result = _mapper.Map<Plant, PlantResource>(plant);
-            return Ok(plant);
+            return Ok(plantResource);
         }
 
         // POST: api/Plants

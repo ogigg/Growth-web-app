@@ -4,16 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Growth.Models
+namespace Growth.Controllers.Resources
 {
-    public class Image
+    public class ImageResource
     {
         public int Id { get; set; }
-        
-        [Required]
+
         public string FileName { get; set; }
 
         public string Caption { get; set; }
-
     }
 }

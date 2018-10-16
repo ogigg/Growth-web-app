@@ -13,6 +13,7 @@ namespace Growth.Mapping
         public MappingProfile()
         {
             //Domain model to API Resource
+            CreateMap<Image, ImageResource>();
             CreateMap<Order, OrderResource>();
             CreateMap<Species, SpeciesResource>();
             CreateMap<Feature, FeatureResource > ();
@@ -22,25 +23,17 @@ namespace Growth.Mapping
             //API Resource to Domain Model
             CreateMap<PlantResource, Plant>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p=>p.Image, opt => opt.MapFrom(p=>p.ImageId))
                 .ForMember(p => p.Features, opt => opt.Ignore()).AfterMap((pr, p) =>
                 {
-                    var removedFeatures = new List<PlantFeature>();
-                    foreach (var f in p.Features)
-                    {
-                        if (!pr.Features.Contains(f.FeatureId))
-                            removedFeatures.Add(f);
-                    }
-
+                    var removedFeatures = p.Features.Where(f => !pr.Features.Contains(f.FeatureId)).ToList();
                     foreach (var f in removedFeatures)
-                    {
                         p.Features.Remove(f);
-                    }
 
-                    foreach (var id in pr.Features)
-                    {
-                        if(!p.Features.Any(f=>f.FeatureId==id))
-                            p.Features.Add(new PlantFeature{FeatureId = id});
-                    }
+                    var addedFeatures = pr.Features.Where(id => p.Features.All(f => f.FeatureId != id))
+                        .Select(id=>new PlantFeature{ FeatureId = id });
+                    foreach (var f in addedFeatures)
+                        p.Features.Add(f);
                 });
         }
     }

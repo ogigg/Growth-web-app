@@ -16,6 +16,7 @@ namespace Growth.Models
         public int SpeciesId { get; set; }
         public Species Species { get; set; }
 
+        public Image Image { get; set; }
 
         public virtual ICollection<PlantFeature> Features { get; set; }
     }

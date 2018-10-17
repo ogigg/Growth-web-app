@@ -20,6 +20,8 @@ namespace Growth.Controllers
     {
         private readonly GrowthDbContext _context;
         private readonly IMapper _mapper;
+        private readonly int _maxFileSize = 2 * 1024 * 1024 ; //2 MB
+        private readonly string[] _acceptedFileTypes = new [] {".jpg", ".jpeg",".png"};
 
         public ImagesController(IHostingEnvironment host, GrowthDbContext context, IMapper mapper)
         {
@@ -33,6 +35,11 @@ namespace Growth.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(int plantId, IFormFile file)
         {
+            if (file == null) return BadRequest("Null File!");
+            if (file.Length == 0) return BadRequest("Empty File!");
+            if (file.Length > _maxFileSize) return BadRequest("File size is greater than "+ _maxFileSize/(1024*1024)+ " MB!");
+            if (!_acceptedFileTypes.Any(f => f == Path.GetExtension(file.FileName).ToLower()))
+                return BadRequest("Invalid file type! Try one of those: " + string.Join(",", _acceptedFileTypes)+"!");
             //var plant = await _context.Plants.FindAsync(plantId);
             var plant = await _context.Plants.Include(p=>p.Image).SingleOrDefaultAsync(p => p.Id == plantId);
             //return Ok(_mapper.Map<Plant, PlantResource>(plant));

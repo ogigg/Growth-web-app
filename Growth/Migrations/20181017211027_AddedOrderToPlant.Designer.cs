@@ -4,14 +4,16 @@ using Growth.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Growth.Migrations
 {
     [DbContext(typeof(GrowthDbContext))]
-    partial class GrowthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181017211027_AddedOrderToPlant")]
+    partial class AddedOrderToPlant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +77,7 @@ namespace Growth.Migrations
 
                     b.Property<int?>("ImageId");
 
-                    b.Property<int>("OrderId");
+                    b.Property<int?>("OderId");
 
                     b.Property<int>("SpeciesId");
 
@@ -83,7 +85,7 @@ namespace Growth.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OderId");
 
                     b.HasIndex("SpeciesId");
 
@@ -135,10 +137,9 @@ namespace Growth.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
-                    b.HasOne("Growth.Models.Order", "Order")
+                    b.HasOne("Growth.Models.Order", "Oder")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OderId");
 
                     b.HasOne("Growth.Models.Species", "Species")
                         .WithMany()

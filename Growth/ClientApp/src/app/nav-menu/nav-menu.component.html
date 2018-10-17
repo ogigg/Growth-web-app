@@ -28,6 +28,11 @@
                   </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
+                  <a [routerLink]='["/plants"]' (click)='collapse()'>
+                    <span class='glyphicon glyphicon-list'></span> Lista Roślin
+                  </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]'>
                   <a [routerLink]='["/plant/new"]' (click)='collapse()'>
                       <span class='	glyphicon glyphicon-plus'></span> Dodaj nową roślinę
                   </a>

@@ -29,7 +29,7 @@ namespace Growth.Controllers
         public IEnumerable<PlantResource> GetPlants()
         {
             var plants = _context.Plants.Include(p => p.Features)
-                .ThenInclude(f=>f.Feature).Include(p=>p.Species).Include(p=>p.Image)
+                .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p=>p.Order)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
             return plants;
         }

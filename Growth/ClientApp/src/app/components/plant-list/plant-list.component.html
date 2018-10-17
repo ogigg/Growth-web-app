@@ -1,0 +1,21 @@
+<h1>Lista roślin</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Lp.</th>
+      <th scope="col">Rząd</th>
+      <th scope="col">Nazwa Gatunku</th>
+      <th scope="col">Cechy</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let p of plants">
+
+    <tr >
+      <th scope="row">{{p.id}}</th>
+      <td>{{p.orderName}}</td>
+      <td>{{p.speciesName}}</td>
+      <td>{{p.features}}</td>
+    </tr>
+
+  </tbody>
+</table>

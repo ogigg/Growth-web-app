@@ -11,7 +11,14 @@ namespace Growth.Controllers.Resources
     {
 
         public int Id { get; set; }
+
         public int SpeciesId { get; set; }
+
+        public string SpeciesName { get; set; }
+
+        public int OrderId { get; set; }
+
+        public string OrderName { get; set; }
 
         public int ImageId { get; set; }
 

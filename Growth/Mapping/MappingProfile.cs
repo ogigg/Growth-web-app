@@ -17,13 +17,17 @@ namespace Growth.Mapping
             CreateMap<Order, OrderResource>();
             CreateMap<Species, SpeciesResource>();
             CreateMap<Feature, FeatureResource > ();
-            CreateMap<Plant, PlantResource> ()
-                .ForMember( pr => pr.Features, opt => opt.MapFrom(p => p.Features.Select(pf => pf.FeatureId)));
+            CreateMap<Plant, PlantResource>()
+                .ForMember(pr => pr.Features, opt => opt.MapFrom(p => p.Features.Select(pf => pf.FeatureId)))
+                .ForMember(pr => pr.OrderId, opt => opt.MapFrom(p => p.Species.OrderId))
+                .ForMember(pr => pr.OrderName, opt => opt.MapFrom(p => p.Order.Name));
+                
 
             //API Resource to Domain Model
             CreateMap<PlantResource, Plant>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
-                .ForMember(p=>p.Image, opt => opt.MapFrom(p=>p.ImageId))
+                //.ForMember(p=>p.Order, opt=>opt.MapFrom(o=>o.OrderId))
+                //.ForMember(p=>p.Image, opt => opt.MapFrom(p=>p.ImageId))
                 .ForMember(p => p.Features, opt => opt.Ignore()).AfterMap((pr, p) =>
                 {
                     var removedFeatures = p.Features.Where(f => !pr.Features.Contains(f.FeatureId)).ToList();

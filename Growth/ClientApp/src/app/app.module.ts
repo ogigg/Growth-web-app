@@ -17,6 +17,7 @@ import { FeatureService } from './services/feature.service';
 import { FeatureFormComponent } from './components/feature-form/feature-form.component';
 import { OrderFormComponent } from './components/order-form/order-form.component';
 import { SpeciesFormComponent } from './components/species-form/species-form.component';
+import { PlantListComponent } from './components/plant-list/plant-list.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { SpeciesFormComponent } from './components/species-form/species-form.com
     PlantFormComponent,
     FeatureFormComponent,
     OrderFormComponent,
-    SpeciesFormComponent
+    SpeciesFormComponent,
+    PlantListComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { SpeciesFormComponent } from './components/species-form/species-form.com
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'plant/new', component: PlantFormComponent },
+      { path: 'plants', component: PlantListComponent },
       { path: 'orders', component: OrderFormComponent },
       { path: 'orders/:id', component: OrderFormComponent },
       { path: 'species', component: SpeciesFormComponent },

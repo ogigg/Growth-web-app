@@ -35,7 +35,8 @@
     </label>
        <span style="padding-left: 10px" [routerLink]='["/features/"+f.id]' class='glyphicon glyphicon-edit'></span>
     </div>
-
+<label for="fileUpload">Wybierz zdjęcie</label>
+  <p><input type="file" id="fileUpload" #fileInput></p>
   <button (click)="onSubmit()" class="btn btn-primary " [disabled]="!form.valid || plant.speciesId==0 || !plant.features.length > 0">Utwórz</button>
 </form>
 

@@ -1,4 +1,14 @@
 <h1>Lista roślin</h1>
+<div class="well">
+  <div class="form-group">
+    <label for="order">Rząd: </label>
+    <select name="order" id="order" class="form-control" [(ngModel)]="filter.orderId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let o of orders"  value="{{o.id}}">{{o.name}}</option>
+    </select>
+  </div>
+  <button class="btn btn-default" (click)="resetFilter()">Resetuj filtr</button>
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -8,7 +18,7 @@
       <th scope="col">Cechy</th>
     </tr>
   </thead>
-  <tbody *ngFor="let p of plants">
+  <tbody *ngFor="let p of displayedPlants">
 
     <tr >
       <th scope="row">{{p.id}}</th>

@@ -3,6 +3,7 @@ import { Plant } from './../plant.model';
 import { Component, OnInit } from '@angular/core';
 import { PlantService } from './../../services/plant.service';
 import { SpeciesService } from './../../services/species.service';
+import { FeatureService } from './../../services/feature.service';
 
 
 
@@ -15,17 +16,26 @@ export class PlantListComponent implements OnInit {
   displayedPlants: Plant[];
   allPlants
   orders: any[];
-  filter: any = {};
+  species: any[];
+  features: any[];
+  filter: any = {
+    selectedFeatures: []
+  };
 
-  constructor(private plantService: PlantService,private speciesService: SpeciesService, private orderService: OrderService) {
+  constructor(private plantService: PlantService,
+    private speciesService: SpeciesService, 
+    private orderService: OrderService,
+    private featureService: FeatureService
+    ) {
     
    }
 
   ngOnInit() {
     this.orderService.getOrders().subscribe((orders: any[]) => this.orders = orders);
+    this.speciesService.getSpecies().subscribe((species: any[]) => this.species = species);
+    this.featureService.getFeatures().subscribe((features: any[]) => this.features = features);
     this.plantService.getPlants().subscribe((plants: Plant[]) => {
       this.displayedPlants = this.allPlants = plants;
-      console.log(this.displayedPlants);
     });
     
   }
@@ -35,10 +45,22 @@ export class PlantListComponent implements OnInit {
     {
       plants=plants.filter(p=>p.orderId==this.filter.orderId);
     }
+    if(this.filter.speciesId)
+    {
+      plants=plants.filter(p=>p.speciesId==this.filter.speciesId);
+    }
+    if(this.filter.selectedFeatures)
+    {
+      this.filter.selectedFeatures.forEach((feature, id) => {
+        if(feature)
+         plants=plants.filter(p=>p.features.some(f=>f==id));
+      });
+    }
     this.displayedPlants=plants;
   }
+
   resetFilter(){
-    this.filter={};
+    this.filter={selectedFeatures: []};
     this.onFilterChange();
   }
 

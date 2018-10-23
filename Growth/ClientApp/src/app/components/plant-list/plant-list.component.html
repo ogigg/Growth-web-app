@@ -1,14 +1,31 @@
 <h1>Lista roślin</h1>
-<div class="well">
-  <div class="form-group">
+  <div class="form-group well">
     <label for="order">Rząd: </label>
-    <select name="order" id="order" class="form-control" [(ngModel)]="filter.orderId" (change)="onFilterChange()">
-      <option value=""></option>
-      <option *ngFor="let o of orders"  value="{{o.id}}">{{o.name}}</option>
-    </select>
+      <select name="order" id="order" class="form-control" [(ngModel)]="filter.orderId" (change)="onFilterChange()">
+        <option value=""></option>
+        <option *ngFor="let o of orders"  value="{{o.id}}">{{o.name}}</option>
+      </select>
+    <label for="species">Gatunek: </label>
+      <select name="species" id="species" class="form-control" [(ngModel)]="filter.speciesId" (change)="onFilterChange()">
+        <option value=""></option>
+        <option *ngFor="let s of species"  value="{{s.id}}">{{s.name}}</option>
+      </select>
+    <label>Cechy:</label>
+    <div class="container-fluid">
+      <div *ngFor="let f of features" class="checkbox" >
+        <label for="{{ f.id }}" class="checkbox col-md-2" >
+          <input  type="checkbox" id="{{ f.id }}" name="{{ f.id }}" [(ngModel)]="filter.selectedFeatures[f.id]" (change)="onFilterChange()" > {{f.name}} 
+        </label>
+      </div> 
+    </div> 
+    <div class=text-right>
+        <button class="btn btn-danger" (click)="resetFilter()" style="margin-top: 15px;">Resetuj filtr</button>
+    </div>
+    
   </div>
-  <button class="btn btn-default" (click)="resetFilter()">Resetuj filtr</button>
-</div>
+
+
+
 <table class="table">
   <thead>
     <tr>

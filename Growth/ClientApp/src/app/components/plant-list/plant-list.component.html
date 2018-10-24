@@ -29,9 +29,21 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Lp.</th>
-      <th scope="col">Rząd</th>
-      <th scope="col">Nazwa Gatunku</th>
+      <th (click)="sortBy('id')" scope="col">Lp.
+        <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='id'"
+        [class.glyphicon-triangle-bottom]="!query.isAscending"
+        [class.glyphicon-triangle-top]="query.isAscending"></span>
+      </th>
+      <th (click)="sortBy('order')" scope="col">Rząd
+          <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='order'"
+          [class.glyphicon-triangle-bottom]="!query.isAscending"
+          [class.glyphicon-triangle-top]="query.isAscending"></span>
+      </th>
+      <th (click)="sortBy('species')" scope="col">Nazwa Gatunku
+          <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='species'"
+          [class.glyphicon-triangle-bottom]="!query.isAscending"
+          [class.glyphicon-triangle-top]="query.isAscending"></span>
+      </th>
       <th scope="col">Cechy</th>
     </tr>
   </thead>

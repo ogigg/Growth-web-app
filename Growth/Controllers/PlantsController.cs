@@ -26,12 +26,36 @@ namespace Growth.Controllers
 
         // GET: api/Plants
         [HttpGet]
-        public IEnumerable<PlantResource> GetPlants()
+        public IEnumerable<PlantResource> GetPlants([FromQuery] PlantQuery plantQuery)
         {
             var plants = _context.Plants.Include(p => p.Features)
                 .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p=>p.Order)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
+            if (plantQuery.SortBy== "order")
+            {
+                if(plantQuery.IsAscending)
+                    plants = plants.OrderBy(p=>p.OrderName);
+                else
+                    plants = plants.OrderByDescending(p=>p.OrderName);
+                
+            }
+            if (plantQuery.SortBy == "species")
+            {
+                if (plantQuery.IsAscending)
+                    plants = plants.OrderBy(p => p.SpeciesName);
+                else
+                    plants = plants.OrderByDescending(p => p.SpeciesName);
+            }
+            if (plantQuery.SortBy == "id")
+            {
+                if (plantQuery.IsAscending)
+                    plants = plants.OrderBy(p => p.Id);
+                else
+                    plants = plants.OrderByDescending(p => p.Id);
+            }
+
             return plants;
+
         }
 
         // GET: api/Plants/5

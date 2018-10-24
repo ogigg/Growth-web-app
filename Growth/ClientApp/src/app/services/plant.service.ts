@@ -15,8 +15,8 @@ export class PlantService {
     })
   };
 
-  getPlants() {
-    return this.http.get('/api/plants');
+  getPlants(query) {
+    return this.http.get('/api/plants'+"?"+this.toQueryString(query));
   }
   
   createPlant(plant: string) {
@@ -34,6 +34,17 @@ export class PlantService {
 
   deletePlant(id: number) {
     return this.http.delete('/api/plants/'+id,this.httpOptions);
+  }
+
+  toQueryString(obj) {
+    var parts = [];
+    for (var property in obj) {
+      var value = obj[property];
+      if (value != null && value != undefined) 
+        parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+    }
+
+    return parts.join('&');
   }
 }
 

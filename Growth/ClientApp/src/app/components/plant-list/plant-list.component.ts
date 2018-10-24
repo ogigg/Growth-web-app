@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlantService } from './../../services/plant.service';
 import { SpeciesService } from './../../services/species.service';
 import { FeatureService } from './../../services/feature.service';
+import { collectExternalReferences } from '@angular/compiler';
 
 
 
@@ -21,6 +22,7 @@ export class PlantListComponent implements OnInit {
   filter: any = {
     selectedFeatures: []
   };
+  query: any = {}
 
   constructor(private plantService: PlantService,
     private speciesService: SpeciesService, 
@@ -34,11 +36,16 @@ export class PlantListComponent implements OnInit {
     this.orderService.getOrders().subscribe((orders: any[]) => this.orders = orders);
     this.speciesService.getSpecies().subscribe((species: any[]) => this.species = species);
     this.featureService.getFeatures().subscribe((features: any[]) => this.features = features);
-    this.plantService.getPlants().subscribe((plants: Plant[]) => {
+    this.populatePlants(this.query);    
+  }
+  populatePlants(query){
+    this.plantService.getPlants(query).subscribe((plants: Plant[]) => {
       this.displayedPlants = this.allPlants = plants;
     });
-    
   }
+
+
+  
   onFilterChange(){
     var plants = this.allPlants;
     if(this.filter.orderId)
@@ -59,6 +66,21 @@ export class PlantListComponent implements OnInit {
     this.displayedPlants=plants;
   }
 
+  sortBy(columnHeader){
+    if(this.query.sortBy === columnHeader){
+      if(this.query.isAscending == true)
+        this.query.isAscending = false;
+      else 
+        this.query.isAscending = true;
+    }
+
+    else{
+      this.query.sortBy = columnHeader;
+      this.query.isAscending = true;
+    }
+    console.log(this.query)
+    this.populatePlants(this.query);
+  }
   resetFilter(){
     this.filter={selectedFeatures: []};
     this.onFilterChange();

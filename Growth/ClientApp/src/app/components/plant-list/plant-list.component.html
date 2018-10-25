@@ -58,3 +58,4 @@
 
   </tbody>
 </table>
+<pagination [total-items]=totalCount [page-size]="query.pageSize" (page-changed)="onPageChanged($event)"></pagination>

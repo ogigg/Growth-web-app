@@ -1,3 +1,4 @@
+import { PaginationComponent } from './../shared/pagination/pagination.component';
 import { OrderService } from './../../services/order.service';
 import { Plant } from './../plant.model';
 import { Component, OnInit } from '@angular/core';
@@ -19,18 +20,21 @@ export class PlantListComponent implements OnInit {
   orders: any[];
   species: any[];
   features: any[];
+  totalCount={};
   filter: any = {
     selectedFeatures: []
   };
-  query: any = {}
-
+  query: any = {
+    pageSize: 4
+  }
   constructor(private plantService: PlantService,
     private speciesService: SpeciesService, 
     private orderService: OrderService,
     private featureService: FeatureService
     ) {
-    
-   }
+      
+    }
+
 
   ngOnInit() {
     this.orderService.getOrders().subscribe((orders: any[]) => this.orders = orders);
@@ -39,8 +43,9 @@ export class PlantListComponent implements OnInit {
     this.populatePlants(this.query);    
   }
   populatePlants(query){
-    this.plantService.getPlants(query).subscribe((plants: Plant[]) => {
-      this.displayedPlants = this.allPlants = plants;
+    this.plantService.getPlants(query).subscribe((result:any[]) => {
+      this.displayedPlants = this.allPlants = result.plants;
+      this.totalCount = result.totalCount;    
     });
   }
 
@@ -64,6 +69,11 @@ export class PlantListComponent implements OnInit {
       });
     }
     this.displayedPlants=plants;
+  }
+
+  onPageChanged(page){
+    this.query.page=page;
+    this.populatePlants(this.query);
   }
 
   sortBy(columnHeader){

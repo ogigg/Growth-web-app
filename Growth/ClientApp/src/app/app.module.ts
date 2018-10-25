@@ -18,6 +18,7 @@ import { FeatureFormComponent } from './components/feature-form/feature-form.com
 import { OrderFormComponent } from './components/order-form/order-form.component';
 import { SpeciesFormComponent } from './components/species-form/species-form.component';
 import { PlantListComponent } from './components/plant-list/plant-list.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { PlantListComponent } from './components/plant-list/plant-list.component
     FeatureFormComponent,
     OrderFormComponent,
     SpeciesFormComponent,
-    PlantListComponent
+    PlantListComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule,

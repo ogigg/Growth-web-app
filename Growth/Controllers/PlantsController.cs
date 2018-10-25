@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 using AutoMapper;
 using Growth.Controllers.Resources;
 using Microsoft.AspNetCore.Http;
@@ -10,11 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Growth.Models;
 using Growth.Persistence;
 
+
+
 namespace Growth.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class PlantsController : ControllerBase
+    public class PlantsController : ApiController
     {
         private readonly GrowthDbContext _context;
         private readonly IMapper _mapper;
@@ -25,19 +30,19 @@ namespace Growth.Controllers
         }
 
         // GET: api/Plants
-        [HttpGet]
-        public IEnumerable<PlantResource> GetPlants([FromQuery] PlantQuery plantQuery)
+        [Microsoft.AspNetCore.Mvc.HttpGet]
+        public QueryResponse GetPlants([FromQuery] PlantQuery plantQuery)
         {
             var plants = _context.Plants.Include(p => p.Features)
-                .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p=>p.Order)
+                .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p => p.Order)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
-            if (plantQuery.SortBy== "order")
+            if (plantQuery.SortBy == "order")
             {
-                if(plantQuery.IsAscending)
-                    plants = plants.OrderBy(p=>p.OrderName);
+                if (plantQuery.IsAscending)
+                    plants = plants.OrderBy(p => p.OrderName);
                 else
-                    plants = plants.OrderByDescending(p=>p.OrderName);
-                
+                    plants = plants.OrderByDescending(p => p.OrderName);
+
             }
             if (plantQuery.SortBy == "species")
             {
@@ -53,36 +58,43 @@ namespace Growth.Controllers
                 else
                     plants = plants.OrderByDescending(p => p.Id);
             }
-
-            return plants;
+            if (plantQuery.Page != 0 && plantQuery.PageSize != 0)
+                plants = plants.Skip((plantQuery.Page - 1) * plantQuery.PageSize).Take(plantQuery.PageSize);
+            var totalCount = _context.Plants.Count();
+            var queryResponse = new QueryResponse();
+            queryResponse.Plants = plants;
+            queryResponse.TotalCount = totalCount;
+            return queryResponse;
 
         }
 
+
+
         // GET: api/Plants/5
-        [HttpGet("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
         public async Task<IActionResult> GetPlant([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new BadRequestResult();
             }
 
             var plant = _mapper.Map<Plant, PlantResource>(_context.Plants.Include(p => p.Features).SingleOrDefault(p => p.Id == id));
 
             if (plant == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
-            return Ok(plant);
+            return new OkObjectResult(plant);
         }
 
         // PUT: api/Plants/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlant([FromRoute] int id, [FromBody] PlantResource plantResource)
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
+        public async Task<IActionResult> PutPlant([FromRoute] int id, [Microsoft.AspNetCore.Mvc.FromBody] PlantResource plantResource)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return new BadRequestResult();
 
 
             var plant = await _context.Plants.Include(p => p.Features).SingleOrDefaultAsync(p => p.Id == id);
@@ -90,16 +102,16 @@ namespace Growth.Controllers
             await _context.SaveChangesAsync();
 
             //var result = _mapper.Map<Plant, PlantResource>(plant);
-            return Ok(plantResource);
+            return new OkObjectResult(plantResource);
         }
 
         // POST: api/Plants
-        [HttpPost]
-        public async Task<IActionResult> PostPlant([FromBody] PlantResource plantResource)
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public async Task<IActionResult> PostPlant([Microsoft.AspNetCore.Mvc.FromBody] PlantResource plantResource)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new BadRequestResult();
             }
 
             var plant = _mapper.Map<PlantResource, Plant>(plantResource);
@@ -108,28 +120,28 @@ namespace Growth.Controllers
 
             var result = _mapper.Map<Plant, PlantResource>(plant);
 
-            return Ok(result);
+            return new OkObjectResult(result);
         }
 
         // DELETE: api/Plants/5
-        [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlant([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return new BadRequestResult();
             }
 
             var plant = await _context.Plants.FindAsync(id);
             if (plant == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
             _context.Plants.Remove(plant);
             await _context.SaveChangesAsync();
 
-            return Ok(plant);
+            return new OkObjectResult(plant);
         }
 
         private bool PlantExists(int id)

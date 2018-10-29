@@ -19,16 +19,19 @@ export class PlantFormComponent implements OnInit {
   orders: any;
   species: any;
   features: any;
-  plant: any = {
-    features: []
-  };
+  plant: Plant;
+  isFileSelected: boolean;
+
   constructor(
     private orderService : OrderService,
     private featureService: FeatureService,
     private plantService: PlantService,
     private imageService: ImageService
     
-  ) { this.orderService.getOrders().subscribe(orders => this.orders = orders);
+  ) {
+    this.plant ={} as Plant;
+    this.plant.features=[];
+    this.orderService.getOrders().subscribe(orders => this.orders = orders);
     this.featureService.getFeatures().subscribe(features => this.features = features);
   }
 
@@ -39,6 +42,10 @@ export class PlantFormComponent implements OnInit {
     var selectedOrder = this.orders.find(o => o.id == this.plant.orderId);
     this.species = selectedOrder ? selectedOrder.species : [];
   }
+  onSpeciesChange(){
+    if(this.plant.name==null)
+      this.plant.name=this.species.find(s=>s.id==this.plant.speciesId).name;
+  }
 
   onChangeFeature(featureId,$event){
     if($event.target.checked)
@@ -48,14 +55,16 @@ export class PlantFormComponent implements OnInit {
       this.plant.features.splice(index,1);
     }
   }
-
+  onFileUploadChange(){
+    this.isFileSelected=true;
+  }
   onSubmit() {
     console.log(this.plant)
       this.plantService.createPlant(this.plant)
       .subscribe(
         (data: Plant) => {
             this.plantId = data.id;
-            var nativeElement: HTMLInputElement =  this.fileInput.nativeElement;
+            var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
             this.imageService.uploadImage(this.plantId,nativeElement.files[0]).subscribe(data => console.log(data));
             console.log("Nadana nowa wartosc id: " + this.plantId)
         },

@@ -24,6 +24,8 @@ namespace Growth.Controllers.Resources
 
         public int ImageId { get; set; }
 
+        public string Description { get; set; }
+
         public ICollection<int> Features { get; set; }
 
         

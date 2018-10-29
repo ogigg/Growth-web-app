@@ -7,4 +7,5 @@ export interface Plant{
     orderName: string;
     imageId: number;
     features: number[];
+    description: string;
 }

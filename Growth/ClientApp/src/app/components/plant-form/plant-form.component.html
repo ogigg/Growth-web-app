@@ -2,12 +2,14 @@
   <h2>Dodaj nową roślinę</h2>
   <div class="form-group">
     <label for="name">Nazwa</label>
-      <input type="text" id="name" [(ngModel)]="plant.name" class="form-control" required>
+      <input type="text" class="form-control" id="name"
+      required
+      [(ngModel)]="plant.name" name="name">
     <label for="order">Rząd</label> 
     <a [routerLink]='["/orders"]'>
        <span style="float: right; color:green" class='	glyphicon glyphicon-plus'></span> 
     </a>
-    <a [hidden] = "!plant.order" [routerLink]='["/orders/"+plant.order]'>
+    <a *ngIf = "plant.orderId" [routerLink]='["/orders/"+plant.orderId]'>
        <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
     </a>
     <select id="order" class="form-control" (change)="onOrderChange()" name="order" [(ngModel)]="plant.orderId" required>
@@ -21,7 +23,7 @@
     <a [routerLink]='["/species"]'>
       <span style="float: right; color:green" class='glyphicon glyphicon-plus'></span> 
     </a>
-    <a [hidden] = "!plant.species" [routerLink]='["/species/"+plant.speciesId]'>
+    <a *ngIf = "plant.speciesId" [routerLink]='["/species/"+plant.speciesId]'>
       <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
    </a>
     <select id="species" class="form-control" name="speciesId" [(ngModel)]="plant.speciesId" (change)="onSpeciesChange()" required>
@@ -37,8 +39,13 @@
     </label>
        <span style="padding-left: 10px" [routerLink]='["/features/"+f.id]' class='glyphicon glyphicon-edit'></span>
     </div>
+      <label for="description">Opis</label>
+      <textarea class="form-control" name="description" id="description" [(ngModel)]="plant.description" rows="3"></textarea>
 <label for="fileUpload">Wybierz zdjęcie</label>
-  <p><input type="file" id="fileUpload" #fileInput></p>
-  <button (click)="onSubmit()" class="btn btn-primary " [disabled]="!form.valid || plant.speciesId==0 || !plant.features.length > 0">Utwórz</button>
+  <p>
+    <input type="file" id="fileUpload" class="form-control-file" (change)="onFileUploadChange()" #fileInput required>
+  </p>
+
+  <button (click)="onSubmit()" class="btn btn-primary " [disabled]="!form.valid || !isFileSelected ||plant.speciesId==0 || plant.features.length==0" >Utwórz</button>
 </form>
 

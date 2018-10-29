@@ -1,3 +1,4 @@
+import { Plant } from './../components/plant.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -19,7 +20,7 @@ export class PlantService {
     return this.http.get('/api/plants'+"?"+this.toQueryString(query));
   }
   
-  createPlant(plant: string) {
+  createPlant(plant: Plant) {
     var body = JSON.stringify(plant);
     return this.http.post('/api/plants', body, this.httpOptions);
   }

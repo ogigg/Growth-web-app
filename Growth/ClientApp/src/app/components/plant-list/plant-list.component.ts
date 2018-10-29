@@ -7,7 +7,7 @@ import { SpeciesService } from './../../services/species.service';
 import { FeatureService } from './../../services/feature.service';
 import { collectExternalReferences } from '@angular/compiler';
 
-
+interface query{plants: Plant[]; totalCount: number;}
 
 @Component({
   selector: 'app-plant-list',
@@ -43,7 +43,7 @@ export class PlantListComponent implements OnInit {
     this.populatePlants(this.query);    
   }
   populatePlants(query){
-    this.plantService.getPlants(query).subscribe((result:any[]) => {
+    this.plantService.getPlants(query).subscribe((result:query) => {
       this.displayedPlants = this.allPlants = result.plants;
       this.totalCount = result.totalCount;    
     });

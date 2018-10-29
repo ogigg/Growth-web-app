@@ -10,6 +10,5 @@ namespace Growth.Models
     {
         public IEnumerable<PlantResource> Plants { get; set; }
         public int TotalCount { get; set; }
-
     }
 }

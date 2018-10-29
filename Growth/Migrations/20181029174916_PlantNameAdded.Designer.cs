@@ -4,14 +4,16 @@ using Growth.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Growth.Migrations
 {
     [DbContext(typeof(GrowthDbContext))]
-    partial class GrowthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181029174916_PlantNameAdded")]
+    partial class PlantNameAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -19,7 +19,7 @@ namespace Growth.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class PlantsController : ApiController
+    public class PlantsController : ApiController 
     {
         private readonly GrowthDbContext _context;
         private readonly IMapper _mapper;
@@ -30,6 +30,7 @@ namespace Growth.Controllers
         }
 
         // GET: api/Plants
+        [Authorize]
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public QueryResponse GetPlants([FromQuery] PlantQuery plantQuery)
         {
@@ -78,8 +79,9 @@ namespace Growth.Controllers
             {
                 return new BadRequestResult();
             }
-
-            var plant = _mapper.Map<Plant, PlantResource>(_context.Plants.Include(p => p.Features).SingleOrDefault(p => p.Id == id));
+ 
+            var plant = _mapper.Map<Plant, PlantResource>(_context.Plants.Include(p => p.Features)
+                .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p => p.Order).SingleOrDefault(p => p.Id == id));
 
             if (plant == null)
             {

@@ -12,6 +12,8 @@ namespace Growth.Controllers.Resources
 
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         public int SpeciesId { get; set; }
 
         public string SpeciesName { get; set; }
@@ -23,6 +25,8 @@ namespace Growth.Controllers.Resources
         public int ImageId { get; set; }
 
         public ICollection<int> Features { get; set; }
+
+        
 
 
         public PlantResource()

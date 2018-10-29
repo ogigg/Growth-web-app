@@ -19,6 +19,7 @@ import { OrderFormComponent } from './components/order-form/order-form.component
 import { SpeciesFormComponent } from './components/species-form/species-form.component';
 import { PlantListComponent } from './components/plant-list/plant-list.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { PlantDetailsComponent } from './components/plant-details/plant-details.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
     OrderFormComponent,
     SpeciesFormComponent,
     PlantListComponent,
-    PaginationComponent
+    PaginationComponent,
+    PlantDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,7 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
       { path: 'species/:id', component: SpeciesFormComponent },
       { path: 'features', component: FeatureFormComponent },
       { path: 'features/:id', component: FeatureFormComponent },
+      { path: 'plant/:id', component: PlantDetailsComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: '**', component: HomeComponent }
     ])

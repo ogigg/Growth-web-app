@@ -73,5 +73,21 @@ namespace Growth.Controllers
 
 
         }
+        
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetImage([FromRoute] int plantId)
+        {
+            var plant = await _context.Plants.Include(p=>p.Image).SingleOrDefaultAsync(p => p.Id == plantId);
+            if (plant == null)
+                return  new NotFoundResult();
+            if (plant.Image == null)
+                return new NotFoundResult();
+            var image = await _context.Images.SingleOrDefaultAsync(i => i.Id == plant.Image.Id);
+            if (image == null)
+                return new NotFoundResult();
+            return new OkObjectResult(image);
+        }
     }
 }

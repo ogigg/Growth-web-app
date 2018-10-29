@@ -15,5 +15,8 @@ namespace Growth.Models
 
         public string Caption { get; set; }
 
+        
+
+
     }
 }

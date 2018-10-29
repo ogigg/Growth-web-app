@@ -1,0 +1,7 @@
+<h1>Szczegóły rośliny</h1>
+<img *ngIf="image !=null" src="/uploads/{{image.fileName}}" class="img-thumbnail">
+<h3>Nazwa: {{plant.name}}</h3>
+<h3>Gatunek: <b>{{plant.speciesName}}</b></h3>
+<h3>Rząd: <b>{{plant.orderName}}</b></h3>
+<h3>Cechy: </h3>
+<p *ngFor="let feature of plantFeatures">{{feature.id}}  {{feature.name}} </p>

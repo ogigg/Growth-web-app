@@ -1,6 +1,8 @@
 <form  #form="ngForm">
   <h2>Dodaj nową roślinę</h2>
   <div class="form-group">
+    <label for="name">Nazwa</label>
+      <input type="text" id="name" [(ngModel)]="plant.name" class="form-control" required>
     <label for="order">Rząd</label> 
     <a [routerLink]='["/orders"]'>
        <span style="float: right; color:green" class='	glyphicon glyphicon-plus'></span> 
@@ -22,7 +24,7 @@
     <a [hidden] = "!plant.species" [routerLink]='["/species/"+plant.speciesId]'>
       <span style="float: right; margin-right: 5px;" class='glyphicon glyphicon-edit'></span> 
    </a>
-    <select id="species" class="form-control" name="speciesId" [(ngModel)]="plant.speciesId" required>
+    <select id="species" class="form-control" name="speciesId" [(ngModel)]="plant.speciesId" (change)="onSpeciesChange()" required>
       <option *ngIf="species==null" value="0">Najpierw wybierz rząd</option>
       <option *ngIf="species!=null" value="0">Wybierz gatunek</option>
       <option *ngFor="let s of species" value="{{s.id}}">{{s.name}}</option>

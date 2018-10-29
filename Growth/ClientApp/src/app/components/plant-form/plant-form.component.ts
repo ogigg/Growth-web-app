@@ -39,6 +39,7 @@ export class PlantFormComponent implements OnInit {
     var selectedOrder = this.orders.find(o => o.id == this.plant.orderId);
     this.species = selectedOrder ? selectedOrder.species : [];
   }
+
   onChangeFeature(featureId,$event){
     if($event.target.checked)
       this.plant.features.push(featureId);
@@ -46,7 +47,6 @@ export class PlantFormComponent implements OnInit {
       var index = this.plant.features.indexOf(featureId);
       this.plant.features.splice(index,1);
     }
-   
   }
 
   onSubmit() {

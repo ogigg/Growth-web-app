@@ -43,6 +43,10 @@
           <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='species'"
           [class.glyphicon-triangle-bottom]="!query.isAscending"
           [class.glyphicon-triangle-top]="query.isAscending"></span>
+      <th (click)="sortBy('species')" scope="col">Nazwa Rośliny
+          <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='name'"
+          [class.glyphicon-triangle-bottom]="!query.isAscending"
+          [class.glyphicon-triangle-top]="query.isAscending"></span>
       </th>
       <th scope="col">Cechy</th>
     </tr>
@@ -53,7 +57,9 @@
       <th scope="row">{{p.id}}</th>
       <td>{{p.orderName}}</td>
       <td>{{p.speciesName}}</td>
+      <td>{{p.name}}</td>
       <td>{{p.features}}</td>
+      <td><a [routerLink]='["/plant/"+p.id]'>Szczegóły</a> </td> 
     </tr>
 
   </tbody>

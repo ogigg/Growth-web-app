@@ -13,4 +13,7 @@ export class ImageService {
     formData.append('file',file);
     return this.http.post(`/api/plants/${plantId}/images`, formData);
   }
+  getImages(plantId){
+    return this.http.get(`/api/plants/${plantId}/images`);
+  }
 }

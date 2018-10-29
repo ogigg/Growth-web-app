@@ -21,7 +21,9 @@ namespace Growth.Models
         public Order Order { get; set; }
 
         public Image Image { get; set; }
-        
+
+        public string Name { get; set; }
+
         public virtual ICollection<PlantFeature> Features { get; set; }
     }
 }

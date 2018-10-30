@@ -1,10 +1,12 @@
+import { ToastrService } from 'ngx-toastr';
 import { ImageService } from './../../services/image.service';
 import { PlantService } from './../../services/plant.service';
 import { FeatureService } from './../../services/feature.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Plant } from '../plant.model';
-
+import {Location} from '@angular/common';
+import { Route, Router } from '@angular/router';
 
 
 
@@ -26,7 +28,10 @@ export class PlantFormComponent implements OnInit {
     private orderService : OrderService,
     private featureService: FeatureService,
     private plantService: PlantService,
-    private imageService: ImageService
+    private toastr: ToastrService,
+    private imageService: ImageService,
+    private location: Location,
+    private router: Router
     
   ) {
     this.plant ={} as Plant;
@@ -59,18 +64,18 @@ export class PlantFormComponent implements OnInit {
     this.isFileSelected=true;
   }
   onSubmit() {
-    console.log(this.plant)
       this.plantService.createPlant(this.plant)
       .subscribe(
         (data: Plant) => {
             this.plantId = data.id;
             var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
             this.imageService.uploadImage(this.plantId,nativeElement.files[0]).subscribe(data => console.log(data));
-            console.log("Nadana nowa wartosc id: " + this.plantId)
+            this.toastr.success("Utworzono nową roślinę o id "+ this.plantId,"Sukces");
+            this.router.navigate(["/plants"]);  
+            this.location.go("/plants");
         },
         error => {
-            console.log("Error", error);
-
+            this.toastr.error(error.message,"Błąd! "+error.name);
         });
       
     

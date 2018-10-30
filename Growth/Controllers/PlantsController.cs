@@ -41,11 +41,9 @@ namespace Growth.Controllers
 
             if (plantQuery.SearchFor != null)
             {
-
                 plants = plants.Where(p => p.Name.ToLower().Contains(plantQuery.SearchFor.ToLower()) ||
-                p.SpeciesName.ToLower().Contains(plantQuery.SearchFor.ToLower()) ||
-                p.OrderName.ToLower().Contains(plantQuery.SearchFor.ToLower())
-                );
+                    p.SpeciesName.ToLower().Contains(plantQuery.SearchFor.ToLower()) ||
+                    p.OrderName.ToLower().Contains(plantQuery.SearchFor.ToLower()));
             }
 
             if (plantQuery.SortBy == "order")

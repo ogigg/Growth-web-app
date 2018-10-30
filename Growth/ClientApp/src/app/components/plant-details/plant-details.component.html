@@ -7,3 +7,8 @@
 <p *ngFor="let feature of plantFeatures">{{feature.id}}  {{feature.name}} </p>
 <h3>Opis: </h3>
 {{plant.description}}
+
+<div class=text-right>
+    <button class="btn btn-default" (click)="onEdit()"style="margin-top: 15px; margin-right: 10px">Edytuj Roślinę</button>
+    <button class="btn btn-danger" (click)="onDelete()" style="margin-top: 15px;">Usuń roślinę</button>
+</div>

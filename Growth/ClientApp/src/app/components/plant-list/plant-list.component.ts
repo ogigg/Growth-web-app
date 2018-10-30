@@ -42,8 +42,6 @@ export class PlantListComponent implements OnInit {
     this.orderService.getOrders().subscribe((orders: any[]) => this.orders = orders);
     this.speciesService.getSpecies().subscribe((species: any[]) => this.species = species);
     this.featureService.getFeatures().subscribe((features: any[]) => this.features = features);
-    console.log(this)
-    this.plantService.getPlants({}).subscribe((result:query)=>{this.allPlants=result.plants});
     this.populatePlants(this.query);    
   }
   populatePlants(query){

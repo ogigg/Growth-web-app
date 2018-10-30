@@ -35,6 +35,7 @@ export class PlantService {
 
   deletePlant(id: number) {
     return this.http.delete('/api/plants/'+id,this.httpOptions);
+    
   }
 
   toQueryString(obj) {

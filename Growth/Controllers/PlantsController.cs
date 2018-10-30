@@ -37,6 +37,7 @@ namespace Growth.Controllers
             var plants = _context.Plants.Include(p => p.Features)
                 .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p => p.Order)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
+            var totalCount = plants.Count();
             if (plantQuery.SortBy == "order")
             {
                 if (plantQuery.IsAscending)
@@ -59,9 +60,16 @@ namespace Growth.Controllers
                 else
                     plants = plants.OrderByDescending(p => p.Id);
             }
+            if (plantQuery.SortBy == "name")
+            {
+                if (plantQuery.IsAscending)
+                    plants = plants.OrderBy(p => p.Name);
+                else
+                    plants = plants.OrderByDescending(p => p.Name);
+            }
             if (plantQuery.Page != 0 && plantQuery.PageSize != 0)
                 plants = plants.Skip((plantQuery.Page - 1) * plantQuery.PageSize).Take(plantQuery.PageSize);
-            var totalCount = _context.Plants.Count();
+            
             var queryResponse = new QueryResponse();
             queryResponse.Plants = plants;
             queryResponse.TotalCount = totalCount;

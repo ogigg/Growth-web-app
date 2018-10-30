@@ -25,7 +25,7 @@ export class PlantListComponent implements OnInit {
     selectedFeatures: []
   };
   query: any = {
-    pageSize: 4
+    pageSize: 5
   }
   constructor(private plantService: PlantService,
     private speciesService: SpeciesService, 
@@ -71,8 +71,9 @@ export class PlantListComponent implements OnInit {
     this.displayedPlants=plants;
   }
 
-  onPageChanged(page){
+  onPageChanged({page,pageSize}){
     this.query.page=page;
+    this.query.pageSize=pageSize;
     this.populatePlants(this.query);
   }
 

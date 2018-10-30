@@ -1,5 +1,7 @@
 <h1>Lista roślin</h1>
   <div class="form-group well">
+    <button *ngIf="!showFilters" class="btn btn-default btn-block" (click)="showFilters=!showFilters">Pokaż filtry</button>
+    <div *ngIf="showFilters">
     <label for="order">Rząd: </label>
       <select name="order" id="order" class="form-control" [(ngModel)]="filter.orderId" (change)="onFilterChange()">
         <option value=""></option>
@@ -19,9 +21,10 @@
       </div> 
     </div> 
     <div class=text-right>
+        <button class="btn btn-default" (click)="showFilters=!showFilters" style="margin-top: 15px; margin-right: 10px">Schowaj filtry</button>
         <button class="btn btn-danger" (click)="resetFilter()" style="margin-top: 15px;">Resetuj filtr</button>
     </div>
-    
+  </div>
   </div>
 
 
@@ -43,7 +46,7 @@
           <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='species'"
           [class.glyphicon-triangle-bottom]="!query.isAscending"
           [class.glyphicon-triangle-top]="query.isAscending"></span>
-      <th (click)="sortBy('species')" scope="col">Nazwa Rośliny
+      <th (click)="sortBy('name')" scope="col">Nazwa Rośliny
           <span class="glyphicon glyphicon-triangle-bottom" *ngIf="query.sortBy==='name'"
           [class.glyphicon-triangle-bottom]="!query.isAscending"
           [class.glyphicon-triangle-top]="query.isAscending"></span>
@@ -64,4 +67,5 @@
 
   </tbody>
 </table>
-<pagination [total-items]=totalCount [page-size]="query.pageSize" (page-changed)="onPageChanged($event)"></pagination>
+<pagination [total-items]=totalCount  (page-changed)="onPageChanged($event)"></pagination>
+<!-- [page-size]="query.pageSize" -->

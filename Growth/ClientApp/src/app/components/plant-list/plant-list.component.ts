@@ -6,6 +6,7 @@ import { PlantService } from './../../services/plant.service';
 import { SpeciesService } from './../../services/species.service';
 import { FeatureService } from './../../services/feature.service';
 import { collectExternalReferences } from '@angular/compiler';
+import { TypeaheadModule } from 'ngx-type-ahead';
 
 interface query{plants: Plant[]; totalCount: number;}
 
@@ -16,7 +17,8 @@ interface query{plants: Plant[]; totalCount: number;}
 })
 export class PlantListComponent implements OnInit {
   displayedPlants: Plant[];
-  allPlants
+  allPlants;
+  notFilteredPlants;
   orders: any[];
   species: any[];
   features: any[];
@@ -40,19 +42,24 @@ export class PlantListComponent implements OnInit {
     this.orderService.getOrders().subscribe((orders: any[]) => this.orders = orders);
     this.speciesService.getSpecies().subscribe((species: any[]) => this.species = species);
     this.featureService.getFeatures().subscribe((features: any[]) => this.features = features);
+    console.log(this)
+    this.plantService.getPlants({}).subscribe((result:query)=>{this.allPlants=result.plants});
     this.populatePlants(this.query);    
   }
   populatePlants(query){
     this.plantService.getPlants(query).subscribe((result:query) => {
-      this.displayedPlants = this.allPlants = result.plants;
+      this.displayedPlants = this.notFilteredPlants  = result.plants;
       this.totalCount = result.totalCount;    
     });
   }
 
-
+  onSearch(){
+    console.log(this.query);
+    this.populatePlants(this.query);
+  }
   
   onFilterChange(){
-    var plants = this.allPlants;
+    var plants = this.notFilteredPlants;
     if(this.filter.orderId)
     {
       plants=plants.filter(p=>p.orderId==this.filter.orderId);
@@ -70,6 +77,7 @@ export class PlantListComponent implements OnInit {
     }
     this.displayedPlants=plants;
   }
+
 
   onPageChanged({page,pageSize}){
     this.query.page=page;

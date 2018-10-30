@@ -15,5 +15,6 @@ namespace Growth.Models
 
         public int PageSize { get; set; }
 
+        public string SearchFor { get; set; }
     }
 }

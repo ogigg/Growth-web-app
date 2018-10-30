@@ -38,6 +38,16 @@ namespace Growth.Controllers
                 .ThenInclude(f => f.Feature).Include(p => p.Species).Include(p => p.Image).Include(p => p.Order)
                 .ToList().Select(_mapper.Map<Plant, PlantResource>);
             var totalCount = plants.Count();
+
+            if (plantQuery.SearchFor != null)
+            {
+
+                plants = plants.Where(p => p.Name.ToLower().Contains(plantQuery.SearchFor.ToLower()) ||
+                p.SpeciesName.ToLower().Contains(plantQuery.SearchFor.ToLower()) ||
+                p.OrderName.ToLower().Contains(plantQuery.SearchFor.ToLower())
+                );
+            }
+
             if (plantQuery.SortBy == "order")
             {
                 if (plantQuery.IsAscending)

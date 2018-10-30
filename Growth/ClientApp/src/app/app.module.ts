@@ -20,7 +20,8 @@ import { SpeciesFormComponent } from './components/species-form/species-form.com
 import { PlantListComponent } from './components/plant-list/plant-list.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
 import { PlantDetailsComponent } from './components/plant-details/plant-details.component';
-
+import { TypeaheadModule } from 'ngx-type-ahead';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,8 @@ import { PlantDetailsComponent } from './components/plant-details/plant-details.
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgSelectModule,
+    TypeaheadModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },

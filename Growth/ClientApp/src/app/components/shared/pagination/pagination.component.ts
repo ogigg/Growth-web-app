@@ -21,7 +21,6 @@ export class PaginationComponent implements OnChanges {
   ngOnChanges() {
     this.reloadPages()
     this.onChangePage(1);
-    console.log(this);
   }
 
   reloadPages(){

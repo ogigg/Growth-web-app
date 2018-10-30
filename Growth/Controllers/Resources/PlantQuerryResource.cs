@@ -15,6 +15,8 @@ namespace Growth.Controllers.Resources
 
         public int PageSize { get; set; }
 
+        public string SearchFor { get; set; }
+        
 
     }
 }

@@ -30,7 +30,7 @@ namespace Growth.Controllers
         }
 
         // GET: api/Plants
-        [Authorize]
+        
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public QueryResponse GetPlants([FromQuery] PlantQuery plantQuery)
         {

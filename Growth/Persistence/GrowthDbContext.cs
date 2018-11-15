@@ -21,6 +21,8 @@ namespace Growth.Persistence
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public GrowthDbContext(DbContextOptions<GrowthDbContext> options) : base(options)
         {
 

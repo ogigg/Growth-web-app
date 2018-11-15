@@ -21,9 +21,10 @@ namespace Growth.Mapping
                 .ForMember(pr => pr.Features, opt => opt.MapFrom(p => p.Features.Select(pf => pf.FeatureId)))
                 .ForMember(pr => pr.OrderId, opt => opt.MapFrom(p => p.Species.OrderId))
                 .ForMember(pr => pr.OrderName, opt => opt.MapFrom(p => p.Order.Name));
-                
+            CreateMap<User, UsersResource>();
 
             //API Resource to Domain Model
+            CreateMap<UsersResource, User>();
             CreateMap<PlantResource, Plant>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 //.ForMember(p=>p.Order, opt=>opt.MapFrom(o=>o.OrderId))

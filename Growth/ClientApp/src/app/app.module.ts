@@ -1,7 +1,10 @@
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { AlertComponent } from './components/alert/alert.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +25,12 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { PlantDetailsComponent } from './components/plant-details/plant-details.component';
 import { TypeaheadModule } from 'ngx-type-ahead';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AuthGuard } from './services/auth.guard';
+import { AlertService } from './services/alert.service';
+import { AuthenticationService } from './services/authentication.service';
+import { JwtInterceptor } from './services/jwt.interceptor';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +45,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     SpeciesFormComponent,
     PlantListComponent,
     PaginationComponent,
-    PlantDetailsComponent
+    PlantDetailsComponent,
+    AlertComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +59,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     NgSelectModule,
     TypeaheadModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -60,10 +73,21 @@ import { NgSelectModule } from '@ng-select/ng-select';
       { path: 'features/:id', component: FeatureFormComponent },
       { path: 'plant/:id', component: PlantDetailsComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },  
       { path: '**', component: HomeComponent }
     ])
   ],
-  providers: [OrderService,FeatureService],
+  providers: [
+    OrderService,
+    FeatureService,
+    AuthGuard,
+    UserService,
+    AlertService,
+    AuthenticationService,
+    //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
